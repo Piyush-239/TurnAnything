@@ -98,8 +98,16 @@ export default function VideoToAudioTool() {
       setProgressState({ status: "Preparing download", progress: 90 })
 
       const outputData = await ffmpeg.readFile(outputFileName)
-      const outputBytes = outputData instanceof Uint8Array ? outputData : new Uint8Array(outputData as ArrayBuffer)
-      const outputBlob = new Blob([outputBytes], { type: "audio/mpeg" })
+
+      if (!(outputData instanceof Uint8Array)) {
+        throw new Error("Unexpected FFmpeg output format.")
+      }
+
+      const outputBytes = new Uint8Array(outputData.slice())
+
+      const outputBlob = new Blob([outputBytes], {
+        type: "audio/mpeg",
+      })
 
       setProgressState({ status: "Completed", progress: 100 })
       await waitFor(COMPLETION_PREVIEW_MS)
