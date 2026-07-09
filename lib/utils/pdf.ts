@@ -10,6 +10,57 @@ export type GenerateImagesPdfOptions = {
   files: File[]
   fileName?: string
   pageMarginMm?: number
+  onProgress?: (progress: PdfGenerationProgress) => void
+}
+
+export type PdfGenerationProgress = {
+  status: string
+  progress: number
+}
+
+function clampProgress(progress: number): number {
+  if (!Number.isFinite(progress)) {
+    return 0
+  }
+
+  if (progress < 0) {
+    return 0
+  }
+
+  if (progress > 100) {
+    return 100
+  }
+
+  return Math.round(progress)
+}
+
+function reportProgress(
+  onProgress: GenerateImagesPdfOptions["onProgress"],
+  status: string,
+  progress: number,
+): void {
+  onProgress?.({
+    status,
+    progress: clampProgress(progress),
+  })
+}
+
+function downloadBlob(blob: Blob, fileName: string): void {
+  const downloadUrl = URL.createObjectURL(blob)
+  const anchor = document.createElement("a")
+
+  anchor.href = downloadUrl
+  anchor.download = fileName
+  anchor.rel = "noreferrer"
+  anchor.style.display = "none"
+
+  document.body.appendChild(anchor)
+  anchor.click()
+  anchor.remove()
+
+  window.setTimeout(() => {
+    URL.revokeObjectURL(downloadUrl)
+  }, 0)
 }
 
 function fileToDataUrl(file: File): Promise<string> {
@@ -71,14 +122,16 @@ function getFitDimensions(
 }
 
 // This utility keeps PDF creation browser-only and reusable so future tools can generate other image-based documents without duplicating jsPDF logic.
-export async function generateImagesPdf({
+export async function createImagesPdfBlob({
   files,
-  fileName = "turnanything-images.pdf",
   pageMarginMm = 10,
-}: GenerateImagesPdfOptions): Promise<void> {
+  onProgress,
+}: GenerateImagesPdfOptions): Promise<Blob> {
   if (files.length === 0) {
     throw new Error("Select at least one image before generating a PDF.")
   }
+
+  reportProgress(onProgress, "Preparing PDF", 5)
 
   const pdf = new jsPDF({
     orientation: "portrait",
@@ -103,7 +156,29 @@ export async function generateImagesPdf({
     }
 
     pdf.addImage(image.dataUrl, file.type.toLowerCase().includes("png") ? "PNG" : "JPEG", x, y, fit.width, fit.height)
+
+    const fileProgress = 10 + ((index + 1) / files.length) * 80
+    reportProgress(onProgress, "Adding images to PDF", fileProgress)
   }
 
-  pdf.save(fileName)
+  reportProgress(onProgress, "Preparing download", 95)
+
+  return pdf.output("blob")
+}
+
+export async function generateImagesPdf({
+  files,
+  fileName = "turnanything-images.pdf",
+  pageMarginMm = 10,
+  onProgress,
+}: GenerateImagesPdfOptions): Promise<void> {
+  const pdfBlob = await createImagesPdfBlob({
+    files,
+    pageMarginMm,
+    onProgress,
+  })
+
+  reportProgress(onProgress, "Completed", 100)
+
+  downloadBlob(pdfBlob, fileName)
 }

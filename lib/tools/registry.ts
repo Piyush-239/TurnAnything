@@ -1,7 +1,8 @@
 import type { ComponentType, SVGProps } from "react"
-import { FileText } from "lucide-react"
+import { FileText, Music2 } from "lucide-react"
 
 import ImageToPdfTool from "@/components/tools/image-to-pdf"
+import VideoToAudioTool from "@/components/tools/video-to-audio"
 
 export type ToolCategory = "utility" | "ai"
 
@@ -37,6 +38,19 @@ export const toolRegistry: ToolDefinition[] = [
     seoTitle: "Image to PDF | TurnAnything.xyz",
     seoDescription: "Convert images into a PDF directly in your browser with TurnAnything.xyz.",
     keywords: ["image to pdf", "convert images to pdf", "pdf tool", "browser pdf"],
+  },
+  {
+    slug: "video-to-audio",
+    title: "Video to Audio",
+    description: "Extract audio from MP4, MOV, WEBM, AVI and MKV videos directly in your browser.",
+    category: "utility",
+    enabled: true,
+    icon: Music2,
+    component: VideoToAudioTool,
+    seoTitle: "MP4 to MP3 Converter – Free Online Video to Audio Converter",
+    seoDescription:
+      "Convert MP4, MOV, WEBM, AVI and MKV videos into MP3 directly in your browser. Fast, private and free.",
+    keywords: ["mp4 to mp3", "video to mp3", "video to audio", "extract audio"],
   },
 ]
 

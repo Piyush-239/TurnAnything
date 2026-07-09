@@ -4,8 +4,10 @@ import * as React from "react"
 import { Download, Loader2 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
+import { ProgressCard } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
-import { generateImagesPdf } from "@/lib/utils/pdf"
+import { createImagesPdfBlob, type PdfGenerationProgress } from "@/lib/utils/pdf"
+import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"
 
 // This component stays page-agnostic so the registry can mount it from the dynamic tool route.
 // Keeping the upload, preview, and conversion UI here lets the route own chrome while the tool owns behavior.
@@ -13,23 +15,58 @@ export default function ImageToPdfTool() {
   const [images, setImages] = React.useState<File[]>([])
   const [isConverting, setIsConverting] = React.useState(false)
   const [conversionError, setConversionError] = React.useState<string | null>(null)
+  const [progressState, setProgressState] = React.useState<ToolProgressState | null>(null)
+
+  const triggerDownload = React.useCallback((blob: Blob, fileName: string) => {
+    const downloadUrl = URL.createObjectURL(blob)
+    const anchor = document.createElement("a")
+
+    anchor.href = downloadUrl
+    anchor.download = fileName
+    anchor.rel = "noreferrer"
+    anchor.style.display = "none"
+
+    document.body.appendChild(anchor)
+    anchor.click()
+    anchor.remove()
+
+    window.setTimeout(() => {
+      URL.revokeObjectURL(downloadUrl)
+    }, 0)
+  }, [])
+
+  const handleProgressUpdate = React.useCallback((update: PdfGenerationProgress) => {
+    setProgressState({
+      status: update.status,
+      progress: update.progress,
+    })
+  }, [])
 
   const handleConvertToPdf = React.useCallback(async () => {
     setIsConverting(true)
     setConversionError(null)
+    setProgressState({ status: "Preparing PDF", progress: 5 })
+
+    const outputFileName = "turnanything-images.pdf"
 
     try {
-      await generateImagesPdf({
+      const pdfBlob = await createImagesPdfBlob({
         files: images,
-        fileName: "turnanything-images.pdf",
+        fileName: outputFileName,
+        onProgress: handleProgressUpdate,
       })
+
+      setProgressState({ status: "Completed", progress: 100 })
+      await waitFor(COMPLETION_PREVIEW_MS)
+      triggerDownload(pdfBlob, outputFileName)
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unable to convert images to PDF."
       setConversionError(message)
     } finally {
       setIsConverting(false)
+      setProgressState(null)
     }
-  }, [images])
+  }, [handleProgressUpdate, images, triggerDownload])
 
   return (
     <div className="grid gap-6">
@@ -73,6 +110,10 @@ export default function ImageToPdfTool() {
           )}
         </Button>
       </div>
+
+      {progressState ? (
+        <ProgressCard status={progressState.status} progress={progressState.progress} />
+      ) : null}
 
       {conversionError ? (
         <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-4 text-sm text-destructive">
