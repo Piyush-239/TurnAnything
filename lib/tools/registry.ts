@@ -1,7 +1,9 @@
 import type { ComponentType, SVGProps } from "react"
-import { FileText, Music2 } from "lucide-react"
+import { FileText, Files, ImageIcon, Music2 } from "lucide-react"
 
+import ImageConverterTool from "@/components/tools/image-converter"
 import ImageToPdfTool from "@/components/tools/image-to-pdf"
+import PdfMergeTool from "@/components/tools/pdf-merge"
 import VideoToAudioTool from "@/components/tools/video-to-audio"
 
 export type ToolCategory = "utility" | "ai"
@@ -27,6 +29,31 @@ export interface ToolDefinition {
 // Keeping the component reference here lets the app discover tools centrally without scattering imports across pages.
 
 export const toolRegistry: ToolDefinition[] = [
+  {
+    slug: "pdf-merge",
+    title: "PDF Merge",
+    description: "Merge multiple PDF files locally in your browser.",
+    category: "utility",
+    enabled: true,
+    icon: Files,
+    component: PdfMergeTool,
+    seoTitle: "PDF Merge | TurnAnything.xyz",
+    seoDescription: "Merge multiple PDF files locally in your browser with TurnAnything.xyz.",
+    keywords: ["pdf merge", "merge pdf", "combine pdfs", "browser pdf merge"],
+  },
+  {
+    slug: "image-converter",
+    title: "Image Converter",
+    description: "Convert JPG, JPEG, PNG, WEBP, GIF, and BMP images directly in your browser.",
+    category: "utility",
+    enabled: true,
+    icon: ImageIcon,
+    component: ImageConverterTool,
+    seoTitle: "Image Converter | TurnAnything.xyz",
+    seoDescription:
+      "Convert JPG, JPEG, PNG, WEBP, GIF, and BMP images directly in your browser with TurnAnything.xyz.",
+    keywords: ["image converter", "convert image", "jpg to png", "png to webp", "browser image converter"],
+  },
   {
     slug: "image-to-pdf",
     title: "Image to PDF",

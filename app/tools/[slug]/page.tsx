@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { PrivacyCard, ToolHeader } from "@/components/tool-layout"
@@ -7,6 +8,20 @@ type ToolPageProps = {
   params: Promise<{
     slug: string
   }>
+}
+
+export async function generateMetadata({ params }: ToolPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const tool = getToolBySlug(slug)
+
+  if (!tool || !tool.enabled) {
+    return {}
+  }
+
+  return {
+    title: tool.seoTitle,
+    description: tool.seoDescription,
+  }
 }
 
 // Dynamic routing scales better than one page per tool because the page structure stays stable while the registry controls what tools exist.
