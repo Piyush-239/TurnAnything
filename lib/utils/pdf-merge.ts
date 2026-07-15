@@ -120,7 +120,13 @@ export async function mergePdfFiles({
 
   reportProgress(onProgress, "Preparing download", 95)
 
-  return new Blob([await mergedPdf.save()], {
+  const mergedPdfBytes = await mergedPdf.save()
+
+  const arrayBuffer = new ArrayBuffer(mergedPdfBytes.byteLength)
+  const view = new Uint8Array(arrayBuffer)
+  view.set(mergedPdfBytes)
+  
+  return new Blob([arrayBuffer], {
     type: "application/pdf",
   })
 }
