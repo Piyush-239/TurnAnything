@@ -45,7 +45,10 @@ function formatBytes(bytes: number) {
 }
 
 function fileMatchesAcceptedTypes(file: File, acceptedFileTypes: string[]) {
-  if (acceptedFileTypes.length === 0) {
+  if (
+    acceptedFileTypes.length === 0 ||
+    acceptedFileTypes.some((type) => type.trim() === "*/*")
+  ) {
     return true
   }
 
@@ -134,7 +137,10 @@ export function FileDropzone({
   const [validationIssues, setValidationIssues] = React.useState<FileValidationIssue[]>([])
 
   const files = value ?? internalFiles
-  const acceptAttribute = acceptedFileTypes.join(",")
+  const isAcceptAll =
+    acceptedFileTypes.length === 0 ||
+    acceptedFileTypes.some((type) => type.trim() === "*/*")
+  const acceptAttribute = isAcceptAll ? undefined : acceptedFileTypes.join(",")
 
   const updateFiles = React.useCallback(
     (nextFiles: File[]) => {

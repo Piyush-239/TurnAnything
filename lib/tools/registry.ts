@@ -1,16 +1,21 @@
 import type { ComponentType, SVGProps } from "react"
-import { FileText, Files, ImageIcon, Music2 } from "lucide-react"
+import { FileText, Files, ImageIcon, Music2, Scissors, Archive } from "lucide-react"
 
 import ImageConverterTool from "@/components/tools/image-converter"
 import ImageToPdfTool from "@/components/tools/image-to-pdf"
 import PdfMergeTool from "@/components/tools/pdf-merge"
 import VideoToAudioTool from "@/components/tools/video-to-audio"
+import ZipCreatorTool from "@/components/tools/zip-creator"
+
+import PdfSplitTool from "@/components/tools/pdf-split"
 
 export type ToolCategory = "utility" | "ai"
 
 export type ToolIcon = ComponentType<SVGProps<SVGSVGElement>>
 
 export type ToolComponent = ComponentType
+
+
 
 export interface ToolDefinition {
   slug: string
@@ -79,6 +84,42 @@ export const toolRegistry: ToolDefinition[] = [
       "Convert MP4, MOV, WEBM, AVI and MKV videos into MP3 directly in your browser. Fast, private and free.",
     keywords: ["mp4 to mp3", "video to mp3", "video to audio", "extract audio"],
   },
+  {
+  slug: "pdf-split",
+  title: "PDF Split",
+  description: "Split PDF pages or extract selected page ranges directly in your browser.",
+  category: "utility",
+  enabled: true,
+  icon: Scissors,
+  component: PdfSplitTool,
+  seoTitle: "Split PDF Online | TurnAnything.xyz",
+  seoDescription:
+    "Split PDF pages or extract selected page ranges for free directly in your browser.",
+  keywords: [
+    "split pdf",
+    "extract pdf pages",
+    "pdf splitter",
+    "split pdf online",
+  ],
+},
+  {
+  slug: "zip-creator",
+  title: "ZIP Creator",
+  description: "Compress multiple files into a ZIP archive directly in your browser.",
+  category: "utility",
+  enabled: true,
+  icon: Archive,
+  component: ZipCreatorTool,
+  seoTitle: "Create ZIP Files Online | TurnAnything.xyz",
+  seoDescription:
+    "Compress multiple files into a ZIP archive directly in your browser for free.",
+  keywords: [
+    "zip creator",
+    "compress files",
+    "zip online",
+    "archive files",
+  ],
+},
 ]
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
