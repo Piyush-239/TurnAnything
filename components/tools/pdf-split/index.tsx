@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download, Loader2 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard } from "@/components/tool-layout"
+import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { splitPdf } from "@/lib/utils/pdf-split"
@@ -90,104 +90,89 @@ export default function PdfSplitTool() {
   ])
 
   return (
-    <div className="grid gap-6">
+    <StandardToolLayout
+      title="PDF Split"
+      description="Split PDF pages or extract selected page ranges directly in your browser."
+      category="utility"
+    >
+      <div className="grid gap-6">
+        <ToolUploadSection>
+          <FileDropzone
+            acceptedFileTypes={["application/pdf", ".pdf"]}
+            multiple={false}
+            value={files}
+            onFilesSelected={setFiles}
+            title="Upload PDF"
+            description="Choose a PDF to split."
+            emptyStateTitle="Drop PDF here"
+            emptyStateDescription="Only PDF files are supported."
+          />
+        </ToolUploadSection>
 
-      <FileDropzone
-        acceptedFileTypes={["application/pdf", ".pdf"]}
-        multiple={false}
-        value={files}
-        onFilesSelected={setFiles}
-        title="Upload PDF"
-        description="Choose a PDF to split."
-        emptyStateTitle="Drop PDF here"
-        emptyStateDescription="Only PDF files are supported."
-      />
+        <div className="rounded-xl border p-5 space-y-5">
 
-      <div className="rounded-xl border p-5 space-y-5">
+          <div className="space-y-3">
 
-        <div className="space-y-3">
+            <label className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                className="hidden"
+                checked={splitEveryPage}
+                readOnly
+              />
+              <input
+                type="radio"
+                checked={splitEveryPage}
+                onChange={() => setSplitEveryPage(true)}
+              />
 
-          <label className="flex items-center gap-3">
-            <input
-              type="radio"
-              checked={splitEveryPage}
-              onChange={() => setSplitEveryPage(true)}
+              <span>Split every page into separate PDFs (ZIP)</span>
+
+            </label>
+
+            <label className="flex items-center gap-3">
+              <input
+                type="radio"
+                checked={!splitEveryPage}
+                onChange={() => setSplitEveryPage(false)}
+              />
+
+              <span>Extract specific pages</span>
+
+            </label>
+
+          </div>
+
+          {!splitEveryPage && (
+            <Input
+              value={pageRanges}
+              onChange={(e) => setPageRanges(e.target.value)}
+              placeholder="Example: 1-3,5,8-10"
             />
-
-            <span>Split every page into separate PDFs (ZIP)</span>
-
-          </label>
-
-          <label className="flex items-center gap-3">
-            <input
-              type="radio"
-              checked={!splitEveryPage}
-              onChange={() => setSplitEveryPage(false)}
-            />
-
-            <span>Extract specific pages</span>
-
-          </label>
+          )}
 
         </div>
 
-        {!splitEveryPage && (
-          <Input
-            value={pageRanges}
-            onChange={(e) => setPageRanges(e.target.value)}
-            placeholder="Example: 1-3,5,8-10"
+        <ToolActionCard
+          title="Ready to split"
+          description="Your PDF never leaves your browser."
+          buttonText="Split PDF"
+          loadingText="Processing..."
+          loading={isProcessing}
+          disabled={!selectedFile}
+          error={errorMessage}
+          onAction={handleSplit}
+          icon={<Download className="size-4" />}
+        />
+
+        {progressState && (
+          <ProgressCard
+            status={progressState.status}
+            progress={progressState.progress}
           />
         )}
 
       </div>
-
-      <div className="flex flex-col gap-3 rounded-2xl border bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-
-        <div>
-
-          <p className="font-medium">
-            Ready to split
-          </p>
-
-          <p className="text-sm text-muted-foreground">
-            Your PDF never leaves your browser.
-          </p>
-
-          {errorMessage && (
-            <p className="mt-2 text-sm text-destructive">
-              {errorMessage}
-            </p>
-          )}
-
-        </div>
-
-        <Button
-          size="lg"
-          disabled={!selectedFile || isProcessing}
-          onClick={handleSplit}
-        >
-          {isProcessing ? (
-            <>
-              <Loader2 className="size-4 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            <>
-              <Download className="size-4" />
-              Split PDF
-            </>
-          )}
-        </Button>
-
-      </div>
-
-      {progressState && (
-        <ProgressCard
-          status={progressState.status}
-          progress={progressState.progress}
-        />
-      )}
-
-    </div>
+    </StandardToolLayout>
   )
 }

@@ -4,9 +4,9 @@ import * as React from "react"
 import { Download, Loader2 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 import { createImagesPdfBlob, type PdfGenerationProgress } from "@/lib/utils/pdf"
+import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"
 
 // This component stays page-agnostic so the registry can mount it from the dynamic tool route.
@@ -69,57 +69,42 @@ export default function ImageToPdfTool() {
   }, [handleProgressUpdate, images, triggerDownload])
 
   return (
-    <div className="grid gap-6">
-      <FileDropzone
-        acceptedFileTypes={["image/*"]}
-        multiple
-        maxFileSize={10 * 1024 * 1024}
-        value={images}
-        onFilesSelected={setImages}
-        title="Upload images"
-        description="Add one or more images to prepare the future PDF conversion flow."
-        emptyStateTitle="Drop images here"
-        emptyStateDescription="PNG, JPG, WEBP, and GIF files are supported for now."
-      />
+    <StandardToolLayout
+      title="Image to PDF"
+      description="Combine images into a single PDF file in the browser."
+      category="utility"
+    >
+      <div className="grid gap-6">
+        <ToolUploadSection>
+          <FileDropzone
+            acceptedFileTypes={["image/*"]}
+            multiple
+            maxFileSize={10 * 1024 * 1024}
+            value={images}
+            onFilesSelected={setImages}
+            title="Upload images"
+            description="Add one or more images to prepare the future PDF conversion flow."
+            emptyStateTitle="Drop images here"
+            emptyStateDescription="PNG, JPG, WEBP, and GIF files are supported for now."
+          />
+        </ToolUploadSection>
 
-      <div className="flex flex-col gap-3 rounded-2xl border bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <p className="text-sm font-medium">Ready to convert</p>
-          <p className="text-sm text-muted-foreground">
-            Your images stay in the browser and will be exported in the same order they were added.
-          </p>
-        </div>
+        <ToolActionCard
+          title="Ready to convert"
+          description="Your images stay in the browser and will be exported in the same order they were added."
+          buttonText="Convert to PDF"
+          loadingText="Converting..."
+          loading={isConverting}
+          disabled={images.length === 0}
+          error={conversionError}
+          onAction={handleConvertToPdf}
+          icon={<Download className="size-4" />}
+        />
 
-        <Button
-          type="button"
-          size="lg"
-          className="w-full sm:w-auto"
-          disabled={images.length === 0 || isConverting}
-          onClick={handleConvertToPdf}
-        >
-          {isConverting ? (
-            <>
-              <Loader2 className="size-4 animate-spin" />
-              Converting...
-            </>
-          ) : (
-            <>
-              <Download className="size-4" />
-              Convert to PDF
-            </>
-          )}
-        </Button>
+        {progressState ? (
+          <ProgressCard status={progressState.status} progress={progressState.progress} />
+        ) : null}
       </div>
-
-      {progressState ? (
-        <ProgressCard status={progressState.status} progress={progressState.progress} />
-      ) : null}
-
-      {conversionError ? (
-        <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-4 text-sm text-destructive">
-          {conversionError}
-        </div>
-      ) : null}
-    </div>
+    </StandardToolLayout>
   )
 }

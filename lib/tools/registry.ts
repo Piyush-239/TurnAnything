@@ -1,11 +1,15 @@
 import type { ComponentType, SVGProps } from "react"
-import { FileText, Files, ImageIcon, Music2, Scissors, Archive } from "lucide-react"
+import { FileText, Files, ImageIcon, Music2, Scissors, Archive, Wand2 } from "lucide-react"
 
 import ImageConverterTool from "@/components/tools/image-converter"
 import ImageToPdfTool from "@/components/tools/image-to-pdf"
 import PdfMergeTool from "@/components/tools/pdf-merge"
 import VideoToAudioTool from "@/components/tools/video-to-audio"
 import ZipCreatorTool from "@/components/tools/zip-creator"
+import ZipExtractorTool from "@/components/tools/zip-extractor"
+import OcrTool from "@/components/tools/ocr"
+import ImageCompressorTool from "@/components/tools/image-compressor"
+import BackgroundRemoverTool from "@/components/tools/background-remover"
 
 import PdfSplitTool from "@/components/tools/pdf-split"
 
@@ -85,41 +89,119 @@ export const toolRegistry: ToolDefinition[] = [
     keywords: ["mp4 to mp3", "video to mp3", "video to audio", "extract audio"],
   },
   {
-  slug: "pdf-split",
-  title: "PDF Split",
-  description: "Split PDF pages or extract selected page ranges directly in your browser.",
-  category: "utility",
-  enabled: true,
-  icon: Scissors,
-  component: PdfSplitTool,
-  seoTitle: "Split PDF Online | TurnAnything.xyz",
-  seoDescription:
-    "Split PDF pages or extract selected page ranges for free directly in your browser.",
-  keywords: [
-    "split pdf",
-    "extract pdf pages",
-    "pdf splitter",
-    "split pdf online",
-  ],
-},
+    slug: "pdf-split",
+    title: "PDF Split",
+    description: "Split PDF pages or extract selected page ranges directly in your browser.",
+    category: "utility",
+    enabled: true,
+    icon: Scissors,
+    component: PdfSplitTool,
+    seoTitle: "Split PDF Online | TurnAnything.xyz",
+    seoDescription:
+      "Split PDF pages or extract selected page ranges for free directly in your browser.",
+    keywords: [
+      "split pdf",
+      "extract pdf pages",
+      "pdf splitter",
+      "split pdf online",
+    ],
+  },
   {
-  slug: "zip-creator",
-  title: "ZIP Creator",
-  description: "Compress multiple files into a ZIP archive directly in your browser.",
-  category: "utility",
-  enabled: true,
-  icon: Archive,
-  component: ZipCreatorTool,
-  seoTitle: "Create ZIP Files Online | TurnAnything.xyz",
-  seoDescription:
-    "Compress multiple files into a ZIP archive directly in your browser for free.",
-  keywords: [
-    "zip creator",
-    "compress files",
-    "zip online",
-    "archive files",
-  ],
-},
+    slug: "zip-creator",
+    title: "ZIP Creator",
+    description: "Compress multiple files into a ZIP archive directly in your browser.",
+    category: "utility",
+    enabled: true,
+    icon: Archive,
+    component: ZipCreatorTool,
+    seoTitle: "Create ZIP Files Online | TurnAnything.xyz",
+    seoDescription:
+      "Compress multiple files into a ZIP archive directly in your browser for free.",
+    keywords: [
+      "zip creator",
+      "compress files",
+      "zip online",
+      "archive files",
+    ],
+  },
+  {
+    slug: "zip-extractor",
+    title: "ZIP Extractor",
+    description: "Extract ZIP archives directly in your browser.",
+    category: "utility",
+    enabled: true,
+    icon: Archive,
+    component: ZipExtractorTool,
+    seoTitle: "Free ZIP Extractor – Extract ZIP Files Online",
+    seoDescription: "Extract ZIP files locally in your browser. Fast, private and free.",
+    keywords: [
+      "zip extractor",
+      "extract zip",
+      "unzip online",
+      "open zip",
+      "browser unzip",
+    ],
+  },
+  {
+    slug: "ocr",
+    title: "Image to Text (OCR)",
+    description: "Extract editable text from images directly in your browser.",
+    category: "utility",
+    enabled: true,
+    icon: FileText,
+    component: OcrTool,
+    seoTitle: "Image to Text (OCR) | TurnAnything.xyz",
+    seoDescription:
+      "Extract text from JPG, PNG, WEBP and other images directly inside your browser. Fast, private and free.",
+    keywords: [
+      "ocr",
+      "image to text",
+      "extract text",
+      "photo to text",
+      "scan image",
+      "text recognition",
+    ],
+  },
+  {
+    slug: "image-compressor",
+    title: "Image Compressor",
+    description: "Compress images without uploading them.",
+    category: "utility",
+    enabled: true,
+    icon: ImageIcon,
+    component: ImageCompressorTool,
+    seoTitle: "Image Compressor | TurnAnything.xyz",
+    seoDescription:
+      "Compress JPG, PNG and WEBP images directly inside your browser. Fast, private and free.",
+    keywords: [
+      "image compressor",
+      "compress image",
+      "reduce image size",
+      "compress jpg",
+      "compress png",
+      "compress webp",
+    ],
+  },
+  {
+    slug: "background-remover",
+    title: "Background Remover",
+    description: "Remove image backgrounds locally in your browser.",
+    category: "utility",
+    enabled: true,
+    icon: Wand2,
+    component: BackgroundRemoverTool,
+    seoTitle: "Background Remover | TurnAnything.xyz",
+    seoDescription:
+      "Remove backgrounds from JPG, PNG and WEBP images locally in your browser. Fast, private and free.",
+    keywords: [
+      "background remover",
+      "remove background",
+      "remove bg",
+      "transparent png",
+      "extract subject",
+      "delete background",
+    ],
+  },
 ]
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {

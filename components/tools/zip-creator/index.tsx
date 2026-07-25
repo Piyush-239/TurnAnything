@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download, Loader2 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard } from "@/components/tool-layout"
+import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 
 import { createZipBlob } from "@/lib/utils/zip"
@@ -83,58 +83,44 @@ export default function ZipCreatorTool() {
   }, [files, triggerDownload])
 
   return (
-    <div className="grid gap-6">
-      <FileDropzone
-        acceptedFileTypes={["*/*"]}
-        multiple
-        value={files}
-        onFilesSelected={setFiles}
-        title="Upload files"
-        description="Choose one or more files to compress."
-        emptyStateTitle="Drop files here"
-        emptyStateDescription="Any file type is supported."
-      />
+    <StandardToolLayout
+      title="ZIP Creator"
+      description="Compress multiple files into a ZIP archive directly in your browser."
+      category="utility"
+    >
+      <div className="grid gap-6">
+        <ToolUploadSection>
+          <FileDropzone
+            acceptedFileTypes={[]}
+            multiple
+            value={files}
+            onFilesSelected={setFiles}
+            title="Upload files"
+            description="Choose one or more files to compress."
+            emptyStateTitle="Drop files here"
+            emptyStateDescription="Any file type is supported."
+          />
+        </ToolUploadSection>
 
-      <div className="flex flex-col gap-3 rounded-2xl border bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="font-medium">Ready to compress</p>
-
-          <p className="text-sm text-muted-foreground">
-            Files are compressed locally in your browser.
-          </p>
-
-          {errorMessage && (
-            <p className="mt-2 text-sm text-destructive">
-              {errorMessage}
-            </p>
-          )}
-        </div>
-
-        <Button
-          size="lg"
-          disabled={files.length === 0 || isCreating}
-          onClick={handleCreateZip}
-        >
-          {isCreating ? (
-            <>
-              <Loader2 className="size-4 animate-spin" />
-              Compressing...
-            </>
-          ) : (
-            <>
-              <Download className="size-4" />
-              Create ZIP
-            </>
-          )}
-        </Button>
-      </div>
-
-      {progressState && (
-        <ProgressCard
-          status={progressState.status}
-          progress={progressState.progress}
+        <ToolActionCard
+          title="Ready to compress"
+          description="Files are compressed locally in your browser."
+          buttonText="Create ZIP"
+          loadingText="Compressing..."
+          loading={isCreating}
+          disabled={files.length === 0}
+          error={errorMessage}
+          onAction={handleCreateZip}
+          icon={<Download className="size-4" />}
         />
-      )}
-    </div>
+
+        {progressState && (
+          <ProgressCard
+            status={progressState.status}
+            progress={progressState.progress}
+          />
+        )}
+      </div>
+    </StandardToolLayout>
   )
 }

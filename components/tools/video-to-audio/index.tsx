@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard } from "@/components/tool-layout"
+import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 import { getFFmpeg } from "@/lib/ffmpeg/ffmpeg"
 import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"
@@ -131,42 +131,41 @@ export default function VideoToAudioTool() {
   }, [buildOutputFileName, selectedVideo, triggerDownload])
 
   return (
-    <div className="grid gap-6">
-      <FileDropzone
-        acceptedFileTypes={acceptedVideoFileTypes}
-        multiple={false}
-        value={videos}
-        onFilesSelected={setVideos}
-        title="Upload video"
-        description="Select a video file to prepare a future browser-based MP3 conversion flow."
-        emptyStateTitle="Drop a video here"
-        emptyStateDescription="MP4, MOV, WEBM, AVI, and MKV files are supported."
-      />
+    <StandardToolLayout
+      title="Video to Audio"
+      description="Extract audio from MP4, MOV, WEBM, AVI and MKV videos directly in your browser."
+      category="utility"
+    >
+      <div className="grid gap-6">
+        <ToolUploadSection>
+          <FileDropzone
+            acceptedFileTypes={acceptedVideoFileTypes}
+            multiple={false}
+            value={videos}
+            onFilesSelected={setVideos}
+            title="Upload video"
+            description="Select a video file to prepare a future browser-based MP3 conversion flow."
+            emptyStateTitle="Drop a video here"
+            emptyStateDescription="MP4, MOV, WEBM, AVI, and MKV files are supported."
+          />
+        </ToolUploadSection>
 
-      <div className="flex flex-col gap-3 rounded-2xl border bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <p className="text-sm font-medium">Ready to convert</p>
-          <p className="text-sm text-muted-foreground">
-            Your video is processed locally in your browser. Nothing is uploaded.
-          </p>
-          {errorMessage ? <p className="text-sm text-destructive">{errorMessage}</p> : null}
-        </div>
+        <ToolActionCard
+          title="Ready to convert"
+          description="Your video is processed locally in your browser. Nothing is uploaded."
+          buttonText="Convert to MP3"
+          loadingText="Converting..."
+          loading={isConverting}
+          disabled={!selectedVideo}
+          error={errorMessage}
+          onAction={handleConvertToMp3}
+          icon={<Download className="size-4" />}
+        />
 
-        <Button
-          type="button"
-          size="lg"
-          className="w-full sm:w-auto"
-          disabled={!selectedVideo || isConverting}
-          onClick={handleConvertToMp3}
-        >
-          <Download className="size-4" />
-          {isConverting ? "Converting..." : "Convert to MP3"}
-        </Button>
+        {progressState ? (
+          <ProgressCard status={progressState.status} progress={progressState.progress} />
+        ) : null}
       </div>
-
-      {progressState ? (
-        <ProgressCard status={progressState.status} progress={progressState.progress} />
-      ) : null}
-    </div>
+    </StandardToolLayout>
   )
 }

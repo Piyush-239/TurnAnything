@@ -4,7 +4,6 @@ import * as React from "react"
 import { Download, Loader2 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 import {
   convertImageFile,
@@ -16,6 +15,7 @@ import {
   type ImageOutputFormat,
   type ImageConversionProgress,
 } from "@/lib/utils/image-converter"
+import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"
 
 const acceptedImageFileTypes = [
@@ -165,92 +165,92 @@ export default function ImageConverterTool() {
     : getImageInputFormatLabel(inputFormat)
 
   return (
-    <div className="grid gap-6">
-      <FileDropzone
-        acceptedFileTypes={acceptedImageFileTypes}
-        multiple={false}
-        maxFileSize={10 * 1024 * 1024}
-        value={images}
-        onFilesSelected={(nextFiles) => {
-          setImages(nextFiles)
-          setErrorMessage(null)
-          setInputFormat(null)
+    <StandardToolLayout
+      title="Image Converter"
+      description="Convert JPG, JPEG, PNG, WEBP, GIF, and BMP images directly in your browser."
+      category="utility"
+    >
+      <div className="grid gap-6">
+        <ToolUploadSection>
+          <FileDropzone
+            acceptedFileTypes={acceptedImageFileTypes}
+            multiple={false}
+            maxFileSize={10 * 1024 * 1024}
+            value={images}
+            onFilesSelected={(nextFiles) => {
+              setImages(nextFiles)
+              setErrorMessage(null)
+              setInputFormat(null)
 
-          if (nextFiles.length === 0) {
-            setIsDetectingFormat(false)
-            setSelectedOutputFormat(null)
-            return
-          }
+              if (nextFiles.length === 0) {
+                setIsDetectingFormat(false)
+                setSelectedOutputFormat(null)
+                return
+              }
 
-          setIsDetectingFormat(true)
-          setSelectedOutputFormat(null)
-        }}
-        title="Upload image"
-        description="Add one image to convert it between JPG, PNG, and WEBP in your browser."
-        emptyStateTitle="Drop an image here"
-        emptyStateDescription="JPG, JPEG, PNG, WEBP, GIF, and BMP files are supported."
-      />
+              setIsDetectingFormat(true)
+              setSelectedOutputFormat(null)
+            }}
+            title="Upload image"
+            description="Add one image to convert it between JPG, PNG, and WEBP in your browser."
+            emptyStateTitle="Drop an image here"
+            emptyStateDescription="JPG, JPEG, PNG, WEBP, GIF, and BMP files are supported."
+          />
+        </ToolUploadSection>
 
-      <div className="flex flex-col gap-4 rounded-2xl border bg-card p-4 shadow-sm">
-        <div className="space-y-3">
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Input Format</p>
-            <p className="text-sm text-muted-foreground">
-              {selectedImage ? inputFormatLabel : "Upload an image to detect its format."}
-            </p>
+        {selectedImage && (
+          <div className="flex flex-col gap-4 rounded-2xl border bg-card p-4 shadow-sm">
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <p className="text-sm font-medium">Input Format</p>
+                <p className="text-sm text-muted-foreground">
+                  {inputFormatLabel}
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="image-converter-output-format" className="text-sm font-medium">
+                  Convert To
+                </label>
+                <select
+                  id="image-converter-output-format"
+                  className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50"
+                  value={resolvedOutputFormat ?? ""}
+                  disabled={isDetectingFormat || availableOutputFormats.length === 0 || isConverting}
+                  onChange={(event) => {
+                    setSelectedOutputFormat(event.target.value as ImageOutputFormat)
+                    setErrorMessage(null)
+                  }}
+                >
+                  {availableOutputFormats.length > 0 ? (
+                    availableOutputFormats.map((format) => (
+                      <option key={format.id} value={format.id}>
+                        {getImageOutputFormatLabel(format.id)}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">{outputFormatPlaceholder}</option>
+                  )}
+                </select>
+              </div>
+            </div>
           </div>
+        )}
 
-          <div className="space-y-2">
-            <label htmlFor="image-converter-output-format" className="text-sm font-medium">
-              Convert To
-            </label>
-            <select
-              id="image-converter-output-format"
-              className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50"
-              value={resolvedOutputFormat ?? ""}
-              disabled={!selectedImage || isDetectingFormat || availableOutputFormats.length === 0 || isConverting}
-              onChange={(event) => {
-                setSelectedOutputFormat(event.target.value as ImageOutputFormat)
-                setErrorMessage(null)
-              }}
-            >
-              {!selectedImage ? <option value="">{outputFormatPlaceholder}</option> : null}
-              {availableOutputFormats.length > 0 ? (
-                availableOutputFormats.map((format) => (
-                  <option key={format.id} value={format.id}>
-                    {getImageOutputFormatLabel(format.id)}
-                  </option>
-                ))
-              ) : (
-                <option value="">{outputFormatPlaceholder}</option>
-              )}
-            </select>
-          </div>
-        </div>
+        <ToolActionCard
+          title="Ready to convert"
+          description="Your image stays in the browser. Nothing is uploaded."
+          buttonText="Download converted image"
+          loadingText="Converting..."
+          loading={isConverting}
+          disabled={!selectedImage || !resolvedOutputFormat || isDetectingFormat}
+          error={errorMessage}
+          onAction={handleConvertImage}
+          icon={<Download className="size-4" />}
+        />
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Ready to convert</p>
-            <p className="text-sm text-muted-foreground">
-              Your image stays in the browser. Nothing is uploaded.
-            </p>
-            {errorMessage ? <p className="text-sm text-destructive">{errorMessage}</p> : null}
-          </div>
-
-          <Button
-            type="button"
-            size="lg"
-            className="w-full sm:w-auto"
-            disabled={!selectedImage || !resolvedOutputFormat || isConverting || isDetectingFormat}
-            onClick={handleConvertImage}
-          >
-            {isConverting ? <Loader2 className="size-4 animate-spin" /> : <Download className="size-4" />}
-            {isConverting ? "Converting..." : "Download converted image"}
-          </Button>
-        </div>
+        {progressState ? <ProgressCard status={progressState.status} progress={progressState.progress} /> : null}
       </div>
-
-      {progressState ? <ProgressCard status={progressState.status} progress={progressState.progress} /> : null}
-    </div>
+    </StandardToolLayout>
   )
 }
