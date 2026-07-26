@@ -1,3 +1,4 @@
+
 import { ads } from "@/lib/ads"
 
 export default function AdSidebar() {
