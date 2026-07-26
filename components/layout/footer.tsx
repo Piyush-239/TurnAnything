@@ -17,9 +17,9 @@ const footerLinks = [
   {
     title: "Company",
     links: [
-      { href: "mailto:hello@turnanything.xyz", label: "Contact" },
-      { href: "#", label: "Privacy" },
-      { href: "#", label: "Terms" },
+      { href: "/contact", label: "Contact" },
+      { href: "/privacy-policy", label: "Privacy" },
+      { href: "/terms-and-conditions", label: "Terms" },
     ],
   },
 ]
