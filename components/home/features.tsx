@@ -2,7 +2,6 @@ import { Eye, Gauge, LaptopMinimal, Search, ShieldCheck, Sparkles } from "lucide
 
 import Section from "@/components/shared/section"
 import SectionTitle from "@/components/shared/ssection-title"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 const features = [
   {
@@ -39,30 +38,30 @@ const features = [
 
 export default function Features() {
   return (
-    <Section id="features" className="bg-muted/20">
+    <Section id="features" className="border-b border-border/60 py-16 sm:py-20">
       <SectionTitle
         eyebrow="Features"
         title="Every part of the homepage reinforces clarity."
         description="The layout and component choices reflect the product principles: beautiful UI, mobile-first flow, privacy-first messaging, and SEO-ready structure."
+        className="mb-12"
       />
 
-      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 divide-y divide-border/60 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-3">
         {features.map((feature) => {
           const Icon = feature.icon
-
           return (
-            <Card key={feature.title} className="rounded-2xl border-border/70 bg-background/95 shadow-sm">
-              <CardHeader className="space-y-4">
-                <div className="flex size-11 items-center justify-center rounded-2xl bg-muted">
-                  <Icon className="size-5" aria-hidden="true" />
-                </div>
-                <CardTitle className="text-xl">{feature.title}</CardTitle>
-                <CardDescription className="text-sm leading-6">{feature.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-6 text-sm text-muted-foreground">
-                Designed to feel polished without adding unnecessary complexity.
-              </CardContent>
-            </Card>
+            <div
+              key={feature.title}
+              className="flex flex-col gap-4 border-b border-border/60 py-7 sm:border-r sm:border-b-0 sm:px-8 sm:py-0 sm:first:pl-0 lg:[&:nth-child(3n)]:border-r-0 sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r"
+            >
+              <div className="flex size-9 items-center justify-center rounded-sm border border-border/70 bg-secondary/60 text-foreground">
+                <Icon className="size-4" aria-hidden="true" />
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="text-base font-bold text-foreground">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+              </div>
+            </div>
           )
         })}
       </div>

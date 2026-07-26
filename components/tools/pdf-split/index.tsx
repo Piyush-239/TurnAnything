@@ -1,11 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Download, Loader2 } from "lucide-react"
+import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
 import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { splitPdf } from "@/lib/utils/pdf-split"
 import {

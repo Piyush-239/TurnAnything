@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Download, Loader2 } from "lucide-react"
+import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { Button } from "@/components/ui/button"
 import { createImagesPdfBlob, type PdfGenerationProgress } from "@/lib/utils/pdf"
 import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"

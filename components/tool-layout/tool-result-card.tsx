@@ -21,17 +21,22 @@ export function ToolResultCard({
   }
 
   return (
-    <div className={cn("space-y-4 rounded-2xl border bg-card p-5 shadow-sm", className)}>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="font-medium text-sm">{title}</p>
+    <div className={cn("space-y-5 border border-border/60 bg-card p-6", className)}>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <p className="text-base font-bold text-foreground">{title}</p>
           {successMessage && (
-            <p className="text-sm text-emerald-600 mt-1">{successMessage}</p>
+            <div className="flex items-center gap-2 mt-1.5">
+              <span className="size-1.5 rounded-full bg-[#E8400C] shrink-0" />
+              <p className="text-xs font-semibold text-[#E8400C]">{successMessage}</p>
+            </div>
           )}
         </div>
-        {downloadArea && <div className="flex items-center gap-2">{downloadArea}</div>}
+        {downloadArea && (
+          <div className="flex items-center gap-2.5">{downloadArea}</div>
+        )}
       </div>
-      {children && <div className="space-y-3">{children}</div>}
+      {children && <div className="space-y-4">{children}</div>}
     </div>
   )
 }

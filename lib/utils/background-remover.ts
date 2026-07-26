@@ -1,3 +1,5 @@
+import type { BodyPix } from "@tensorflow-models/body-pix"
+
 export interface BackgroundRemoverProgress {
   status: string
   progress: number
@@ -12,7 +14,7 @@ export interface RemoveBackgroundResult {
   blob: Blob
 }
 
-let netInstance: any = null
+let netInstance: BodyPix | null = null
 
 async function getBodyPixModel(onProgress: RemoveBackgroundOptions["onProgress"]) {
   if (netInstance) {

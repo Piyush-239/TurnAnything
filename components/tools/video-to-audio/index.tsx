@@ -5,7 +5,6 @@ import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
 import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
-import { Button } from "@/components/ui/button"
 import { getFFmpeg } from "@/lib/ffmpeg/ffmpeg"
 import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"
 

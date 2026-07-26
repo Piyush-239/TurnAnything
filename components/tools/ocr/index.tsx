@@ -30,11 +30,12 @@ export default function OcrTool() {
   const [progressState, setProgressState] = React.useState<ToolProgressState | null>(null)
   const [copied, setCopied] = React.useState(false)
 
-  React.useEffect(() => {
+  const handleFilesSelected = React.useCallback((selectedFiles: File[]) => {
+    setImages(selectedFiles)
     setResultText("")
     setMetrics(null)
     setErrorMessage(null)
-  }, [images])
+  }, [])
 
   const handleExtractText = React.useCallback(async () => {
     if (images.length === 0) {
@@ -144,7 +145,7 @@ export default function OcrTool() {
             ]}
             multiple={false}
             value={images}
-            onFilesSelected={setImages}
+            onFilesSelected={handleFilesSelected}
             title="Upload image"
             description="Choose an image containing text to extract."
             emptyStateTitle="Drop image here"

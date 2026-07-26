@@ -1,6 +1,4 @@
 import { CheckCircle2, Loader2 } from "lucide-react"
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
 type ProgressCardProps = {
@@ -10,18 +8,9 @@ type ProgressCardProps = {
 }
 
 function clampProgress(progress: number): number {
-  if (!Number.isFinite(progress)) {
-    return 0
-  }
-
-  if (progress < 0) {
-    return 0
-  }
-
-  if (progress > 100) {
-    return 100
-  }
-
+  if (!Number.isFinite(progress)) return 0
+  if (progress < 0) return 0
+  if (progress > 100) return 100
   return Math.round(progress)
 }
 
@@ -32,44 +21,54 @@ export function ProgressCard({ status, progress, className }: ProgressCardProps)
   const hasStarted = safeProgress > 0
 
   return (
-    <Card className={cn("rounded-2xl border-border/70", className)}>
-      <CardHeader className="border-b border-border/60 pb-3">
-        <CardTitle className="text-base">Conversion progress</CardTitle>
-      </CardHeader>
-
-      <CardContent className="space-y-3 pt-4">
-        <div className="flex items-center justify-between gap-3 text-sm">
-          <p className="inline-flex items-center gap-2 text-muted-foreground">
+    <div className={cn("border border-border/60 bg-card p-6", className)}>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
             {isCompleted ? (
-              <CheckCircle2 className="size-4 text-emerald-600" aria-hidden="true" />
+              <CheckCircle2 className="size-4.5 text-[#E8400C] shrink-0" aria-hidden="true" />
             ) : (
               <Loader2
-                className={cn("size-4", hasStarted ? "animate-spin text-primary" : "text-muted-foreground")}
+                className={cn("size-4.5 shrink-0", hasStarted ? "animate-spin text-foreground" : "text-muted-foreground/40")}
                 aria-hidden="true"
               />
             )}
-            <span>{trimmedStatus || "Waiting to start"}</span>
-          </p>
-          <p className="font-medium tabular-nums">{safeProgress}%</p>
+            <span className="text-sm font-semibold text-foreground/90">
+              {trimmedStatus || "Waiting to start"}
+            </span>
+          </div>
+          <span className={cn(
+            "text-sm font-bold tabular-nums",
+            isCompleted ? "text-[#E8400C]" : "text-muted-foreground"
+          )}>
+            {safeProgress}%
+          </span>
         </div>
 
+        {/* Progress track */}
         <div
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={safeProgress}
           aria-label="Conversion progress"
-          className="h-2 w-full overflow-hidden rounded-full bg-muted"
+          className="h-1.5 w-full overflow-hidden bg-secondary border border-border/50"
         >
           <div
             className={cn(
-              "h-full rounded-full transition-[width] duration-300",
-              isCompleted ? "bg-emerald-600" : "bg-primary"
+              "h-full transition-all duration-500 ease-out",
+              isCompleted ? "bg-[#E8400C]" : "bg-foreground"
             )}
             style={{ width: `${safeProgress}%` }}
           />
         </div>
-      </CardContent>
-    </Card>
+
+        {isCompleted && (
+          <p className="text-xs font-medium text-[#E8400C]">
+            ✓ Conversion complete — ready to download
+          </p>
+        )}
+      </div>
+    </div>
   )
 }

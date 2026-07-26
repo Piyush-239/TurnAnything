@@ -1,13 +1,11 @@
 import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
 
-import Section from "@/components/shared/section"
 import SectionTitle from "@/components/shared/ssection-title"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getEnabledTools } from "@/lib/tools/registry"
 
 function formatCategoryLabel(category: "utility" | "ai") {
-	return category.toUpperCase()
+	return category === "ai" ? "AI" : "Utility"
 }
 
 export default function PopularTools() {
@@ -16,44 +14,65 @@ export default function PopularTools() {
 	const tools = getEnabledTools()
 
 	return (
-		<Section id="tools">
-			<SectionTitle
-				eyebrow="Popular tools"
-				title="Explore active tools from the platform registry."
-				description="Tools shown here are discovered from the central registry, so releases and feature flags update this section automatically."
-			/>
-
-			<div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-				{tools.map((tool) => {
-					const Icon = tool.icon
-
-					return (
-						<Link
-							key={tool.slug}
-							href={`/tools/${tool.slug}`}
-							className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
-						>
-							<Card className="h-full rounded-2xl border-border/70 bg-background/95 shadow-sm transition-all duration-200 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:ring-1 group-hover:ring-primary/20">
-								<CardHeader className="space-y-4">
-									<div className="flex items-center justify-between gap-3">
-										<div className="flex size-11 items-center justify-center rounded-2xl bg-muted">
-											<Icon className="size-5" aria-hidden="true" />
-										</div>
-										<Badge variant={tool.category === "ai" ? "default" : "secondary"} className="rounded-full">
-											{formatCategoryLabel(tool.category)}
-										</Badge>
-									</div>
-									<CardTitle className="text-xl">{tool.title}</CardTitle>
-									<CardDescription className="text-sm leading-6">{tool.description}</CardDescription>
-								</CardHeader>
-								<CardContent className="pb-6 text-sm font-medium text-primary">
-									Open tool
-								</CardContent>
-							</Card>
-						</Link>
-					)
-				})}
+		<section id="tools" className="border-b border-border/60">
+			{/* Section header */}
+			<div className="mx-auto w-full max-w-7xl px-4 pt-14 pb-8 sm:px-6 lg:px-8">
+				<div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+					<SectionTitle
+						eyebrow="Popular right now"
+						title="Skip the search. Start here."
+						description=""
+					/>
+					<p className="max-w-xs text-sm text-muted-foreground leading-relaxed lg:text-right">
+						The tools people open first.{" "}
+						<span className="text-[#E8400C]">Everything else</span> is one search away.
+					</p>
+				</div>
 			</div>
-		</Section>
+
+			{/* Tool grid — divider lines between cards, no card backgrounds */}
+			<div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+				<div className="grid grid-cols-1 border-t border-border/60 sm:grid-cols-2 lg:grid-cols-4">
+					{tools.map((tool, i) => {
+						const paddedIndex = String(i + 1).padStart(2, "0")
+
+						return (
+							<Link
+								key={tool.slug}
+								href={`/tools/${tool.slug}`}
+								className="group relative flex flex-col gap-4 border-b border-r border-border/60 px-6 py-8 transition-colors duration-150 hover:bg-secondary/40 last:border-r-0 [&:nth-child(4n)]:border-r-0 sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0"
+							>
+								{/* Index + category + arrow */}
+								<div className="flex items-center justify-between">
+									<span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">
+										{paddedIndex} — {formatCategoryLabel(tool.category)}
+									</span>
+									<ArrowUpRight className="size-4 text-muted-foreground/30 transition-all duration-150 group-hover:text-[#E8400C] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+								</div>
+
+								{/* Tool title */}
+								<div>
+									<h3 className="text-lg font-bold text-foreground leading-snug">
+										{tool.title}
+									</h3>
+									<p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+										{tool.description}
+									</p>
+								</div>
+							</Link>
+						)
+					})}
+
+					{/* "View all" card */}
+					<Link
+						href="/tools"
+						className="group flex flex-col items-center justify-center gap-2 border-b border-border/60 bg-foreground px-6 py-8 text-center transition-opacity duration-150 hover:opacity-90"
+					>
+						<p className="text-base font-bold text-background">View all 500+ tools</p>
+						<p className="text-sm text-background/60">Or just search for yours above.</p>
+					</Link>
+				</div>
+			</div>
+		</section>
 	)
 }

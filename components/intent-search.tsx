@@ -5,8 +5,6 @@ import type { FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import { Search, Sparkles } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { resolveIntent } from "@/lib/intent"
 import { cn } from "@/lib/utils"
@@ -47,51 +45,41 @@ export default function IntentSearch({
 	}
 
 	return (
-		<Card
-			className={cn(
-				"mt-10 w-full rounded-[2rem] border-border/70 bg-background/90 shadow-[0_30px_90px_-40px_rgba(0,0,0,0.45)] backdrop-blur sm:mt-12",
-				className
-			)}
+		<form
+			onSubmit={handleSubmit}
+			className={cn("w-full", className)}
 		>
-			<CardContent className="space-y-5 p-4 sm:p-6 lg:p-8">
-				<form onSubmit={handleSubmit} className="space-y-4 text-left">
-					<div className="rounded-[1.5rem] border border-border/70 bg-muted/20 px-4 py-4 shadow-sm transition-colors focus-within:border-ring/70 focus-within:bg-background focus-within:ring-2 focus-within:ring-ring/15 sm:px-5 sm:py-5">
-						<p className="mb-3 text-sm font-medium text-muted-foreground sm:text-base">
-							What do you want to turn today?
-						</p>
-						<div className="flex items-center gap-3">
-							<Search className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
-							<Input
-								aria-label="What do you want to turn today?"
-								value={userInput}
-								onChange={(event) => setUserInput(event.target.value)}
-								placeholder={placeholder}
-								className="h-auto border-0 bg-transparent px-0 py-0 text-base shadow-none placeholder:text-muted-foreground/55 focus-visible:ring-0 sm:text-lg"
-							/>
-						</div>
-						{helperMessage ? (
-							<p
-								aria-live="polite"
-								className="mt-4 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-3 py-1.5 text-sm text-muted-foreground shadow-sm animate-in fade-in slide-in-from-top-1 duration-200"
-							>
-								{intentMatch ? (
-									<Sparkles className="size-3.5 text-foreground" aria-hidden="true" />
-								) : null}
-								{intentMatch ? `✓ ${helperMessage}` : helperMessage}
-							</p>
-						) : null}
-					</div>
+			{/* Search bar — matches reference: white pill with black Search button */}
+			<div className="flex h-14 items-center gap-2 rounded-full border border-border bg-card pl-5 pr-2 shadow-sm focus-within:border-[#E8400C]/40 focus-within:shadow-[0_0_0_1px_rgba(232,64,12,0.15)] transition-all duration-150">
+				<Search className="size-4 shrink-0 text-muted-foreground/60" aria-hidden="true" />
+				<Input
+					aria-label="What do you want to turn today?"
+					value={userInput}
+					onChange={(event) => setUserInput(event.target.value)}
+					placeholder={placeholder}
+					className="h-auto flex-1 border-0 bg-transparent px-0 py-0 text-base font-medium shadow-none placeholder:text-muted-foreground/40 focus-visible:ring-0 text-foreground"
+				/>
+				<button
+					type="submit"
+					disabled={isSubmitDisabled}
+					className="h-10 shrink-0 rounded-full bg-foreground px-5 text-sm font-semibold text-background transition-opacity hover:opacity-80 disabled:opacity-40"
+				>
+					Search
+				</button>
+			</div>
 
-					<Button
-						type="submit"
-						disabled={isSubmitDisabled}
-						size="lg"
-						className="h-12 w-full rounded-full px-8 text-base font-semibold sm:h-14 sm:w-auto"
-					>
-						Turn It
-					</Button>
-				</form>
-			</CardContent>
-		</Card>
+			{/* Helper message */}
+			{helperMessage ? (
+				<p
+					aria-live="polite"
+					className="mt-3 inline-flex items-center gap-1.5 border border-border/70 bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground animate-in fade-in slide-in-from-top-1 duration-200 rounded-sm"
+				>
+					{intentMatch ? (
+						<Sparkles className="size-3.5 text-[#E8400C]" aria-hidden="true" />
+					) : null}
+					{intentMatch ? `✓ ${helperMessage}` : helperMessage}
+				</p>
+			) : null}
+		</form>
 	)
 }

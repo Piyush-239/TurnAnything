@@ -39,16 +39,25 @@ export default function ImageCompressorTool() {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
   const [progressState, setProgressState] = React.useState<ToolProgressState | null>(null)
 
-  React.useEffect(() => {
-    if (images.length === 0) {
+  const handleFilesSelected = React.useCallback((selectedFiles: File[]) => {
+    setImages(selectedFiles)
+    setCompressedResult(null)
+    setCompressedPreviewUrl(null)
+    setErrorMessage(null)
+    if (selectedFiles.length === 0) {
       setOriginalPreviewUrl(null)
       setDimensions(null)
-      setCompressedResult(null)
-      setErrorMessage(null)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    if (images.length === 0) {
       return
     }
     const url = URL.createObjectURL(images[0])
-    setOriginalPreviewUrl(url)
+    const timer = setTimeout(() => {
+      setOriginalPreviewUrl(url)
+    }, 0)
 
     const img = new Image()
     img.onload = () => {
@@ -56,23 +65,23 @@ export default function ImageCompressorTool() {
     }
     img.src = url
 
-    setCompressedResult(null)
-    setErrorMessage(null)
-
     return () => {
+      clearTimeout(timer)
       URL.revokeObjectURL(url)
     }
   }, [images])
 
   React.useEffect(() => {
     if (!compressedResult) {
-      setCompressedPreviewUrl(null)
       return
     }
     const url = URL.createObjectURL(compressedResult.blob)
-    setCompressedPreviewUrl(url)
+    const timer = setTimeout(() => {
+      setCompressedPreviewUrl(url)
+    }, 0)
 
     return () => {
+      clearTimeout(timer)
       URL.revokeObjectURL(url)
     }
   }, [compressedResult])
@@ -192,7 +201,7 @@ export default function ImageCompressorTool() {
               ]}
               multiple={false}
               value={images}
-              onFilesSelected={setImages}
+              onFilesSelected={handleFilesSelected}
               title="Upload image"
               description="Choose an image file to compress locally."
               emptyStateTitle="Drop image here"
@@ -251,7 +260,7 @@ export default function ImageCompressorTool() {
                   className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50"
                   value={format}
                   disabled={isCompressing || compressedResult !== null}
-                  onChange={(event) => setFormat(event.target.value as any)}
+                  onChange={(event) => setFormat(event.target.value as typeof format)}
                 >
                   <option value="auto">Auto (Keep original)</option>
                   <option value="jpeg">JPEG</option>

@@ -1,6 +1,4 @@
 import Link from "next/link"
-
-import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 type ToolHeaderProps = {
@@ -23,32 +21,28 @@ export function ToolHeader({ title, description, category, className }: ToolHead
   const normalizedCategory = formatCategory(category)
 
   return (
-    <header className={cn("space-y-3 sm:space-y-4", className)}>
-      <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground sm:text-sm">
+    <header className={cn("space-y-4", className)}>
+      <nav aria-label="Breadcrumb" className="text-[11px] font-medium text-muted-foreground/50">
         <ol className="flex flex-wrap items-center gap-1.5">
           <li>
-            <Link href="/" className="transition-colors hover:text-foreground">
-              Home
-            </Link>
+            <Link href="/" className="transition-colors hover:text-[#E8400C]">Home</Link>
           </li>
-          <li aria-hidden="true">/</li>
+          <li aria-hidden="true" className="text-muted-foreground/30">›</li>
           <li>
-            <Link href="/tools" className="transition-colors hover:text-foreground">
-              Tools
-            </Link>
+            <Link href="/tools" className="transition-colors hover:text-[#E8400C]">Tools</Link>
           </li>
-          <li aria-hidden="true">/</li>
-          <li className="text-foreground">{normalizedCategory}</li>
+          <li aria-hidden="true" className="text-muted-foreground/30">›</li>
+          <li className="font-semibold text-foreground/70">{normalizedCategory}</li>
         </ol>
       </nav>
 
-      <Badge variant="outline" className="w-fit rounded-full px-3 py-1">
+      <span className="inline-flex items-center border border-border/70 px-3 py-0.5 text-[11px] font-semibold text-muted-foreground/60 rounded-sm">
         {normalizedCategory}
-      </Badge>
+      </span>
 
       <div className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
-        <p className="max-w-3xl text-sm leading-6 text-muted-foreground sm:text-base sm:leading-7">
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl leading-[1.1]">{title}</h1>
+        <p className="max-w-3xl text-sm text-muted-foreground leading-relaxed sm:text-base">
           {description}
         </p>
       </div>

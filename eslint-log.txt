@@ -1,0 +1,218 @@
+
+D:\TurnAnything\turnanything\app\learn\category\[slug]\page.tsx
+  4:21  warning  'BookOpen' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\blog\article-footer.tsx
+  15:49  warning  'updatedDate' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+  21:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\TurnAnything\turnanything\components\blog\article-footer.tsx:21:5
+  19 |
+  20 |   React.useEffect(() => {
+> 21 |     setShareUrl(window.location.href)
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  22 |   }, [])
+  23 |
+  24 |   const handleSubscribe = (e: React.FormEvent) => {  react-hooks/set-state-in-effect
+
+D:\TurnAnything\turnanything\components\blog\article-hero.tsx
+  82:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\TurnAnything\turnanything\components\blog\article-renderer.tsx
+   97:9   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  126:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  348:14  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  367:11  error    'blockContentLines' is never reassigned. Use 'const' instead                                                                                                                                                                                                                             prefer-const
+  389:11  error    'codeLines' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                     prefer-const
+  423:11  error    'bqLines' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                       prefer-const
+  438:11  error    'listLines' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                     prefer-const
+  460:11  error    'listLines' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                     prefer-const
+  482:11  error    'tableLines' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                    prefer-const
+  501:9   error    'paragraphLines' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                prefer-const
+
+D:\TurnAnything\turnanything\components\blog\continue-reading.tsx
+  115:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\TurnAnything\turnanything\components\blog\learn-home-client.tsx
+    5:50  warning  'Flame' is defined but never used                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  101:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\TurnAnything\turnanything\components\home\cta.tsx
+  1:10  warning  'ArrowRight' is defined but never used  @typescript-eslint/no-unused-vars
+  1:30  warning  'Sparkles' is defined but never used    @typescript-eslint/no-unused-vars
+  3:8   warning  'Section' is defined but never used     @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\home\features.tsx
+  50:33  warning  'i' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\home\how-it-works.tsx
+  1:26  warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\home\popular-tools.tsx
+   4:8   warning  'Section' is defined but never used        @typescript-eslint/no-unused-vars
+  38:13  warning  'Icon' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\home\turn-anything-home.tsx
+  38:53  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  38:74  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  39:59  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\TurnAnything\turnanything\components\layout\footer.tsx
+  2:10  warning  'ArrowRight' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\learn\article-card.tsx
+  18:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\TurnAnything\turnanything\components\tool-layout\standard-tool-layout.tsx
+  4:10  warning  'AdSlot' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\tools\background-remover\index.tsx
+   30:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\TurnAnything\turnanything\components\tools\background-remover\index.tsx:30:7
+  28 |   React.useEffect(() => {
+  29 |     if (images.length === 0) {
+> 30 |       setOriginalPreviewUrl(null)
+     |       ^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  31 |       setResultBlob(null)
+  32 |       setErrorMessage(null)
+  33 |       return  react-hooks/set-state-in-effect
+   47:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\TurnAnything\turnanything\components\tools\background-remover\index.tsx:47:7
+  45 |   React.useEffect(() => {
+  46 |     if (!resultBlob) {
+> 47 |       setResultPreviewUrl(null)
+     |       ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  48 |       return
+  49 |     }
+  50 |     const url = URL.createObjectURL(resultBlob)              react-hooks/set-state-in-effect
+  161:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  223:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  232:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+
+D:\TurnAnything\turnanything\components\tools\image-compressor\index.tsx
+   44:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\TurnAnything\turnanything\components\tools\image-compressor\index.tsx:44:7
+  42 |   React.useEffect(() => {
+  43 |     if (images.length === 0) {
+> 44 |       setOriginalPreviewUrl(null)
+     |       ^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  45 |       setDimensions(null)
+  46 |       setCompressedResult(null)
+  47 |       setErrorMessage(null)  react-hooks/set-state-in-effect
+   69:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\TurnAnything\turnanything\components\tools\image-compressor\index.tsx:69:7
+  67 |   React.useEffect(() => {
+  68 |     if (!compressedResult) {
+> 69 |       setCompressedPreviewUrl(null)
+     |       ^^^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  70 |       return
+  71 |     }
+  72 |     const url = URL.createObjectURL(compressedResult.blob)        react-hooks/set-state-in-effect
+  207:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @next/next/no-img-element
+  254:72  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/no-explicit-any
+  317:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @next/next/no-img-element
+  325:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @next/next/no-img-element
+
+D:\TurnAnything\turnanything\components\tools\image-converter\index.tsx
+  4:20  warning  'Loader2' is defined but never used  @typescript-eslint/no-unused-vars
+  7:10  warning  'Button' is defined but never used   @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\tools\image-to-pdf\index.tsx
+  4:20  warning  'Loader2' is defined but never used  @typescript-eslint/no-unused-vars
+  7:10  warning  'Button' is defined but never used   @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\tools\ocr\index.tsx
+  34:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\TurnAnything\turnanything\components\tools\ocr\index.tsx:34:5
+  32 |
+  33 |   React.useEffect(() => {
+> 34 |     setResultText("")
+     |     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  35 |     setMetrics(null)
+  36 |     setErrorMessage(null)
+  37 |   }, [images])  react-hooks/set-state-in-effect
+
+D:\TurnAnything\turnanything\components\tools\pdf-merge\index.tsx
+  4:34  warning  'Loader2' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\tools\pdf-split\index.tsx
+  4:20  warning  'Loader2' is defined but never used  @typescript-eslint/no-unused-vars
+  8:10  warning  'Button' is defined but never used   @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\tools\video-to-audio\index.tsx
+  8:10  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\tools\zip-creator\index.tsx
+  4:20  warning  'Loader2' is defined but never used  @typescript-eslint/no-unused-vars
+  8:10  warning  'Button' is defined but never used   @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\components\tools\zip-extractor\index.tsx
+  40:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\TurnAnything\turnanything\components\tools\zip-extractor\index.tsx:40:5
+  38 |
+  39 |   React.useEffect(() => {
+> 40 |     setExtractedFiles([])
+     |     ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  41 |     setErrorMessage(null)
+  42 |   }, [files])
+  43 |  react-hooks/set-state-in-effect
+
+D:\TurnAnything\turnanything\lib\learn\articles.ts
+  41:34  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:16  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  79:18  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+
+D:\TurnAnything\turnanything\lib\utils\background-remover.ts
+  15:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 57 problems (21 errors, 36 warnings)
+  7 errors and 0 warnings potentially fixable with the `--fix` option.
+

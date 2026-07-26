@@ -36,10 +36,11 @@ export default function ZipExtractorTool() {
   const [progressState, setProgressState] =
     React.useState<ToolProgressState | null>(null)
 
-  React.useEffect(() => {
+  const handleFilesSelected = React.useCallback((selectedFiles: File[]) => {
+    setFiles(selectedFiles)
     setExtractedFiles([])
     setErrorMessage(null)
-  }, [files])
+  }, [])
 
   const triggerDownload = React.useCallback((blob: Blob, filename: string) => {
     const url = URL.createObjectURL(blob)
@@ -159,7 +160,7 @@ export default function ZipExtractorTool() {
             acceptedFileTypes={[".zip", "application/zip", "application/x-zip-compressed"]}
             multiple={false}
             value={files}
-            onFilesSelected={setFiles}
+            onFilesSelected={handleFilesSelected}
             title="Upload ZIP file"
             description="Choose a ZIP archive to extract its contents."
             emptyStateTitle="Drop ZIP file here"

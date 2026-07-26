@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Download, Loader2 } from "lucide-react"
+import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { Button } from "@/components/ui/button"
 import {
   convertImageFile,
   detectImageInputFormat,

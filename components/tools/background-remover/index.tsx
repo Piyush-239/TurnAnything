@@ -25,32 +25,42 @@ export default function BackgroundRemoverTool() {
   const [progressState, setProgressState] = React.useState<ToolProgressState | null>(null)
   const [showHdModal, setShowHdModal] = React.useState(false)
 
+  const handleFilesSelected = React.useCallback((selectedFiles: File[]) => {
+    setImages(selectedFiles)
+    setResultBlob(null)
+    setResultPreviewUrl(null)
+    setErrorMessage(null)
+    if (selectedFiles.length === 0) {
+      setOriginalPreviewUrl(null)
+    }
+  }, [])
+
   React.useEffect(() => {
     if (images.length === 0) {
-      setOriginalPreviewUrl(null)
-      setResultBlob(null)
-      setErrorMessage(null)
       return
     }
     const url = URL.createObjectURL(images[0])
-    setOriginalPreviewUrl(url)
-    setResultBlob(null)
-    setErrorMessage(null)
+    const timer = setTimeout(() => {
+      setOriginalPreviewUrl(url)
+    }, 0)
 
     return () => {
+      clearTimeout(timer)
       URL.revokeObjectURL(url)
     }
   }, [images])
 
   React.useEffect(() => {
     if (!resultBlob) {
-      setResultPreviewUrl(null)
       return
     }
     const url = URL.createObjectURL(resultBlob)
-    setResultPreviewUrl(url)
+    const timer = setTimeout(() => {
+      setResultPreviewUrl(url)
+    }, 0)
 
     return () => {
+      clearTimeout(timer)
       URL.revokeObjectURL(url)
     }
   }, [resultBlob])
@@ -146,7 +156,7 @@ export default function BackgroundRemoverTool() {
               ]}
               multiple={false}
               value={images}
-              onFilesSelected={setImages}
+              onFilesSelected={handleFilesSelected}
               title="Upload image"
               description="Choose an image file to extract the subject."
               emptyStateTitle="Drop image here"

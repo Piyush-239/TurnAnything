@@ -1,50 +1,42 @@
-import { ArrowRight, Sparkles } from "lucide-react"
-
-import Section from "@/components/shared/section"
-import { Button } from "@/components/ui/button"
+import { Search } from "lucide-react"
 
 export default function Cta() {
   return (
-    <Section className="pb-20 sm:pb-24">
-      <div className="rounded-2xl border border-border/70 bg-foreground px-6 py-10 text-background sm:px-8 sm:py-12 lg:px-12">
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 rounded-full bg-background/10 px-3 py-1 text-sm font-medium text-background/85">
-              <Sparkles className="size-4" aria-hidden="true" />
-              Ready for launch
-            </div>
-            <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Build the easiest place on the internet to transform information.
-            </h2>
-            <p className="max-w-xl text-base leading-7 text-background/75 sm:text-lg">
-              The foundation is in place: a premium homepage, clear product story, and a structure
-              that can grow as TurnAnything adds more tools.
-            </p>
-          </div>
+    <section className="bg-foreground py-20 sm:py-24 lg:py-28">
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-8 px-4 text-center sm:px-6 lg:px-8">
+        {/* Eyebrow */}
+        <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-background/40">
+          Stop switching between 10 tabs
+        </p>
 
-          <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
-            <Button
-              render={<a href="#demo" />}
-              nativeButton={false}
-              variant="secondary"
-              size="lg"
-              className="h-11 rounded-full px-5"
+        {/* Headline */}
+        <h2 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-background sm:text-5xl lg:text-6xl">
+          Turn anything into{" "}
+          <em className="not-italic font-extrabold text-[#E8400C]" style={{ fontStyle: "italic" }}>
+            anything
+          </em>{" "}
+          — right now.
+        </h2>
+
+        {/* Search bar on dark */}
+        <div className="w-full max-w-lg">
+          <div className="flex h-14 items-center gap-2 rounded-full border border-white/15 bg-card pl-5 pr-2 shadow-sm">
+            <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <span className="flex-1 text-sm text-muted-foreground">
+              What do you want to turn today?
+            </span>
+            <a
+              href="#tools"
+              className="inline-flex h-10 items-center gap-1.5 rounded-full bg-foreground px-5 text-sm font-semibold text-background transition-opacity hover:opacity-80"
             >
-              Explore the demo
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Button>
-            <Button
-              render={<a href="mailto:hello@turnanything.xyz" />}
-              nativeButton={false}
-              variant="outline"
-              size="lg"
-              className="h-11 rounded-full border-background/20 bg-transparent px-5 text-background hover:bg-background/10 hover:text-background"
-            >
-              Contact us
-            </Button>
+              Search
+            </a>
           </div>
+          <p className="mt-3 text-xs text-background/40">
+            No credit card. No account. No catch.
+          </p>
         </div>
       </div>
-    </Section>
+    </section>
   )
 }

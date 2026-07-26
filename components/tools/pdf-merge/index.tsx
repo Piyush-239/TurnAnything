@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Download, GripVertical, Loader2, MoveDown, MoveUp, Trash2 } from "lucide-react"
+import { Download, GripVertical, MoveDown, MoveUp, Trash2 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
 import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"

@@ -1,9 +1,6 @@
-import { ArrowRight, CheckCircle2, ShieldCheck, Sparkles, Upload } from "lucide-react"
+import { ArrowRight, CheckCircle2, ShieldCheck, Upload, Zap } from "lucide-react"
 
 import Section from "@/components/shared/section"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 const highlights = ["One upload", "One click", "Fast results"]
 
@@ -15,20 +12,19 @@ const stats = [
 
 export default function Hero() {
   return (
-    <Section className="relative overflow-hidden pt-10 sm:pt-14 lg:pt-20">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(0,0,0,0.08),transparent_35%),radial-gradient(circle_at_top_right,rgba(0,0,0,0.06),transparent_32%),linear-gradient(to_bottom,transparent,transparent,rgba(0,0,0,0.02))] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.05),transparent_28%)]" />
+    <Section className="border-b border-border/60 py-14 sm:py-16 lg:py-20">
       <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
-        <div className="space-y-8">
-          <div className="space-y-5">
-            <Badge variant="outline" className="rounded-full px-3 py-1">
-              <Sparkles className="mr-1.5 size-3.5" aria-hidden="true" />
+        <div className="space-y-7">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-1.5 border border-border/70 px-3 py-1 text-[11px] font-semibold text-[#E8400C] rounded-sm">
+              <Zap className="size-3" aria-hidden="true" />
               AI content transformations, simplified
-            </Badge>
-            <div className="space-y-4">
-              <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+            </div>
+            <div className="space-y-3">
+              <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl leading-[1.05]">
                 Turn anything into the format you actually need.
               </h1>
-              <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+              <p className="max-w-2xl text-base text-muted-foreground leading-relaxed sm:text-lg">
                 Upload a PDF, link a video, or drop in an image and get notes, flashcards, quizzes,
                 summaries, audio, and more without switching tools.
               </p>
@@ -36,101 +32,95 @@ export default function Hero() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button
-              render={<a href="#demo" />}
-              nativeButton={false}
-              size="lg"
-              className="h-11 rounded-full px-5"
+            <a
+              href="#demo"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-foreground px-6 text-sm font-semibold text-background transition-opacity hover:opacity-80"
             >
               Explore the demo
               <ArrowRight className="size-4" aria-hidden="true" />
-            </Button>
-            <Button
-              render={<a href="#tools" />}
-              nativeButton={false}
-              variant="outline"
-              size="lg"
-              className="h-11 rounded-full px-5"
+            </a>
+            <a
+              href="#tools"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border/80 px-6 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
             >
               View popular tools
-            </Button>
+            </a>
           </div>
 
-          <ul className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+          <ul className="flex flex-wrap gap-2">
             {highlights.map((item) => (
               <li
                 key={item}
-                className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/70 px-3 py-2"
+                className="inline-flex items-center gap-2 border border-border/70 px-3 py-1.5 text-xs font-medium text-muted-foreground rounded-sm"
               >
-                <CheckCircle2
-                  className="size-4 text-emerald-600 dark:text-emerald-400"
-                  aria-hidden="true"
-                />
+                <CheckCircle2 className="size-3.5 text-[#E8400C]" aria-hidden="true" />
                 {item}
               </li>
             ))}
           </ul>
         </div>
 
-        <Card className="rounded-2xl border-border/70 bg-background/90 shadow-[0_24px_80px_-28px_rgba(0,0,0,0.35)] backdrop-blur">
-          <CardHeader className="space-y-3 border-b border-border/60 pb-5">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Upload className="size-4" aria-hidden="true" />
+        {/* Preview card */}
+        <div className="border border-border/60 bg-card overflow-hidden shadow-sm">
+          <div className="border-b border-border/50 px-6 py-5 space-y-1">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Upload className="size-3.5" aria-hidden="true" />
               Upload preview
             </div>
-            <CardTitle className="text-2xl">PDF to notes in one pass</CardTitle>
-            <CardDescription>
+            <h2 className="text-lg font-bold">PDF to notes in one pass</h2>
+            <p className="text-sm text-muted-foreground">
               A clean demo of the TurnAnything flow: choose a source, pick an output, and move on.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-6 p-6 sm:p-7">
-            <div className="grid gap-4 sm:grid-cols-3">
+            </p>
+          </div>
+
+          <div className="grid gap-4 p-6">
+            <div className="grid gap-3 sm:grid-cols-3">
               {stats.map((stat) => (
-                <div key={stat.label} className="rounded-2xl border border-border/70 bg-muted/40 p-4">
-                  <p className="text-2xl font-semibold tracking-tight">{stat.value}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
+                <div key={stat.label} className="border border-border/60 bg-secondary/40 p-4">
+                  <p className="text-xl font-extrabold text-foreground">{stat.value}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{stat.label}</p>
                 </div>
               ))}
             </div>
 
-            <div className="grid gap-4 rounded-2xl border border-border/70 bg-muted/30 p-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
-              <div className="space-y-3 rounded-2xl bg-background p-4 ring-1 ring-border/70">
-                <p className="text-sm font-medium">Input</p>
-                <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="grid gap-3 border border-border/60 bg-secondary/20 p-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+              <div className="space-y-2 border border-border/60 bg-card p-3">
+                <p className="text-xs font-semibold">Input</p>
+                <div className="space-y-1 text-xs text-muted-foreground">
                   <p>Annual research brief.pdf</p>
                   <p>98 pages · uploaded from mobile</p>
                 </div>
               </div>
-              <div className="mx-auto flex size-10 items-center justify-center rounded-full bg-foreground text-background">
-                <ArrowRight className="size-4" aria-hidden="true" />
+              <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-foreground text-background">
+                <ArrowRight className="size-3.5" aria-hidden="true" />
               </div>
-              <div className="space-y-3 rounded-2xl bg-background p-4 ring-1 ring-border/70">
-                <p className="text-sm font-medium">Output</p>
-                <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="space-y-2 border border-border/60 bg-card p-3">
+                <p className="text-xs font-semibold">Output</p>
+                <div className="space-y-1 text-xs text-muted-foreground">
                   <p>Structured notes</p>
-                  <p>Headings, bullets, and takeaways</p>
+                  <p>Headings, bullets, takeaways</p>
                 </div>
               </div>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="flex items-center gap-3 rounded-2xl border border-border/70 p-4">
-                <ShieldCheck className="size-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+              <div className="flex items-center gap-3 border border-border/60 bg-secondary/30 p-4">
+                <ShieldCheck className="size-4 shrink-0 text-[#E8400C]" aria-hidden="true" />
                 <div>
-                  <p className="font-medium">Privacy-aware workflow</p>
-                  <p className="text-sm text-muted-foreground">Built for clear, simple transformations.</p>
+                  <p className="text-sm font-semibold">Privacy-aware</p>
+                  <p className="text-xs text-muted-foreground">Simple, transparent.</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 rounded-2xl border border-border/70 p-4">
-                <Sparkles className="size-5 text-foreground" aria-hidden="true" />
+              <div className="flex items-center gap-3 border border-border/60 bg-secondary/30 p-4">
+                <Zap className="size-4 shrink-0 text-[#E8400C]" aria-hidden="true" />
                 <div>
-                  <p className="font-medium">Premium output feel</p>
-                  <p className="text-sm text-muted-foreground">Sharp cards, clean spacing, and readable results.</p>
+                  <p className="text-sm font-semibold">Premium output</p>
+                  <p className="text-xs text-muted-foreground">Sharp, readable results.</p>
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </Section>
   )

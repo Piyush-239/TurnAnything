@@ -6,13 +6,6 @@ import { ImageIcon, Upload, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 
 type FileDropzoneProps = {
   acceptedFileTypes: string[]
@@ -33,38 +26,20 @@ type FileValidationIssue = {
 }
 
 function formatBytes(bytes: number) {
-  if (bytes < 1024) {
-    return `${bytes} B`
-  }
-
-  if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} KB`
-  }
-
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
 function fileMatchesAcceptedTypes(file: File, acceptedFileTypes: string[]) {
-  if (
-    acceptedFileTypes.length === 0 ||
-    acceptedFileTypes.some((type) => type.trim() === "*/*")
-  ) {
+  if (acceptedFileTypes.length === 0 || acceptedFileTypes.some((type) => type.trim() === "*/*")) {
     return true
   }
-
   const lowerName = file.name.toLowerCase()
-
   return acceptedFileTypes.some((acceptedType) => {
     const lowerAcceptedType = acceptedType.toLowerCase()
-
-    if (lowerAcceptedType.startsWith(".")) {
-      return lowerName.endsWith(lowerAcceptedType)
-    }
-
-    if (lowerAcceptedType.endsWith("/*")) {
-      return file.type.toLowerCase().startsWith(lowerAcceptedType.slice(0, -1))
-    }
-
+    if (lowerAcceptedType.startsWith(".")) return lowerName.endsWith(lowerAcceptedType)
+    if (lowerAcceptedType.endsWith("/*")) return file.type.toLowerCase().startsWith(lowerAcceptedType.slice(0, -1))
     return file.type.toLowerCase() === lowerAcceptedType || lowerName.endsWith(lowerAcceptedType)
   })
 }
@@ -75,43 +50,37 @@ function getFileKey(file: File) {
 
 function FilePreview({ file, onRemove }: { file: File; onRemove: () => void }) {
   const previewUrl = React.useMemo(() => {
-    if (!file.type.startsWith("image/")) {
-      return null
-    }
-
+    if (!file.type.startsWith("image/")) return null
     return URL.createObjectURL(file)
   }, [file])
 
   React.useEffect(() => {
     return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl)
-      }
+      if (previewUrl) URL.revokeObjectURL(previewUrl)
     }
   }, [previewUrl])
 
   return (
-    <div className="flex items-center gap-3 rounded-xl border bg-background/70 p-3">
-      <div className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted">
+    <div className="flex items-center gap-3 border border-border/60 bg-secondary/30 p-3 transition-colors hover:bg-secondary/50">
+      <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden border border-border/60 bg-card">
         {previewUrl ? (
           // The preview is intentionally limited to images so the component stays generic for future tools.
-          <Image src={previewUrl} alt={file.name} width={64} height={64} unoptimized className="size-full object-cover" />
+          <Image src={previewUrl} alt={file.name} width={48} height={48} unoptimized className="size-full object-cover" />
         ) : (
-          <ImageIcon className="size-5 text-muted-foreground" />
+          <ImageIcon className="size-4.5 text-muted-foreground/50" />
         )}
       </div>
-
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium">{file.name}</p>
-        <p className="text-xs text-muted-foreground">{formatBytes(file.size)}</p>
+        <p className="truncate text-sm font-semibold text-foreground">{file.name}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{formatBytes(file.size)}</p>
       </div>
-
       <Button
         type="button"
         variant="ghost"
         size="icon-sm"
         onClick={onRemove}
         aria-label={`Remove ${file.name}`}
+        className="rounded-full hover:bg-destructive/8 hover:text-[#E8400C] active:scale-95 transition-all duration-150"
       >
         <X className="size-4" />
       </Button>
@@ -137,17 +106,12 @@ export function FileDropzone({
   const [validationIssues, setValidationIssues] = React.useState<FileValidationIssue[]>([])
 
   const files = value ?? internalFiles
-  const isAcceptAll =
-    acceptedFileTypes.length === 0 ||
-    acceptedFileTypes.some((type) => type.trim() === "*/*")
+  const isAcceptAll = acceptedFileTypes.length === 0 || acceptedFileTypes.some((type) => type.trim() === "*/*")
   const acceptAttribute = isAcceptAll ? undefined : acceptedFileTypes.join(",")
 
   const updateFiles = React.useCallback(
     (nextFiles: File[]) => {
-      if (value === undefined) {
-        setInternalFiles(nextFiles)
-      }
-
+      if (value === undefined) setInternalFiles(nextFiles)
       onFilesSelected(nextFiles)
     },
     [onFilesSelected, value]
@@ -158,39 +122,25 @@ export function FileDropzone({
       const nextInputFiles = Array.from(incomingFiles)
       const existingFiles = multiple ? files : []
       const existingKeys = new Set(existingFiles.map(getFileKey))
-
       const acceptedFiles: File[] = []
       const nextIssues: FileValidationIssue[] = []
 
       for (const file of nextInputFiles) {
         if (!fileMatchesAcceptedTypes(file, acceptedFileTypes)) {
-          nextIssues.push({
-            name: file.name,
-            message: `Unsupported file type. Accepted types: ${acceptedFileTypes.join(", ")}`,
-          })
+          nextIssues.push({ name: file.name, message: `Unsupported file type. Accepted types: ${acceptedFileTypes.join(", ")}` })
           continue
         }
-
         if (maxFileSize !== undefined && file.size > maxFileSize) {
-          nextIssues.push({
-            name: file.name,
-            message: `File is too large. Maximum size: ${formatBytes(maxFileSize)}`,
-          })
+          nextIssues.push({ name: file.name, message: `File is too large. Maximum size: ${formatBytes(maxFileSize)}` })
           continue
         }
-
         const key = getFileKey(file)
-
-        if (existingKeys.has(key)) {
-          continue
-        }
-
+        if (existingKeys.has(key)) continue
         existingKeys.add(key)
         acceptedFiles.push(file)
       }
 
       const nextFiles = multiple ? [...existingFiles, ...acceptedFiles] : acceptedFiles.slice(0, 1)
-
       setValidationIssues(nextIssues)
       updateFiles(nextFiles)
     },
@@ -200,7 +150,6 @@ export function FileDropzone({
   const handleRemoveFile = React.useCallback(
     (fileToRemove: File) => {
       const nextFiles = files.filter((file) => getFileKey(file) !== getFileKey(fileToRemove))
-
       updateFiles(nextFiles)
     },
     [files, updateFiles]
@@ -211,19 +160,13 @@ export function FileDropzone({
   }, [])
 
   return (
-    <Card
-      className={cn(
-        "border-dashed bg-card/70 shadow-sm backdrop-blur-sm",
-        isDragging && "border-primary ring-2 ring-primary/20",
-        className
-      )}
-    >
-      <CardHeader className="space-y-1 border-b px-4 py-4 sm:px-6">
-        <CardTitle className="text-base">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
+    <div className={cn("border border-border/60 bg-card", isDragging && "border-[#E8400C]/50", className)}>
+      <div className="space-y-1.5 px-5 pt-5 pb-2">
+        <h3 className="text-base font-bold text-foreground">{title}</h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
 
-      <CardContent className="space-y-4 px-4 py-4 sm:px-6">
+      <div className="space-y-5 px-5 pb-5 pt-3">
         <input
           ref={inputRef}
           type="file"
@@ -231,10 +174,7 @@ export function FileDropzone({
           accept={acceptAttribute}
           multiple={multiple}
           onChange={(event) => {
-            if (event.target.files) {
-              handleIncomingFiles(event.target.files)
-            }
-
+            if (event.target.files) handleIncomingFiles(event.target.files)
             event.target.value = ""
           }}
         />
@@ -250,61 +190,58 @@ export function FileDropzone({
               openFilePicker()
             }
           }}
-          onDragEnter={(event) => {
-            event.preventDefault()
-            setIsDragging(true)
-          }}
-          onDragOver={(event) => {
-            event.preventDefault()
-            setIsDragging(true)
-          }}
-          onDragLeave={(event) => {
-            event.preventDefault()
-            setIsDragging(false)
-          }}
+          onDragEnter={(event) => { event.preventDefault(); setIsDragging(true) }}
+          onDragOver={(event) => { event.preventDefault(); setIsDragging(true) }}
+          onDragLeave={(event) => { event.preventDefault(); setIsDragging(false) }}
           onDrop={(event) => {
             event.preventDefault()
             setIsDragging(false)
-            if (event.dataTransfer.files.length > 0) {
-              handleIncomingFiles(event.dataTransfer.files)
-            }
+            if (event.dataTransfer.files.length > 0) handleIncomingFiles(event.dataTransfer.files)
           }}
           className={cn(
-            "flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-border/70 bg-muted/30 p-6 text-center transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60",
-            isDragging && "border-primary bg-primary/5"
+            "flex min-h-[200px] cursor-pointer flex-col items-center justify-center border-2 border-dashed border-border/50 bg-secondary/20 p-6 text-center transition-all duration-200",
+            "hover:bg-secondary/40 hover:border-foreground/20",
+            isDragging && "border-[#E8400C]/60 bg-[#E8400C]/3"
           )}
         >
-          <Upload className="mb-3 size-8 text-muted-foreground" />
-          <p className="text-sm font-medium">{emptyStateTitle}</p>
-          <p className="mt-1 max-w-md text-sm text-muted-foreground">{emptyStateDescription}</p>
+          <div className={cn(
+            "mb-4 flex size-11 items-center justify-center border border-border/60 bg-card transition-all duration-200",
+            isDragging && "border-[#E8400C]/40 text-[#E8400C]"
+          )}>
+            <Upload className="size-5 text-muted-foreground" />
+          </div>
+          <p className="text-sm font-semibold text-foreground">{emptyStateTitle}</p>
+          <p className="mt-1.5 max-w-sm text-xs text-muted-foreground leading-relaxed">{emptyStateDescription}</p>
 
-          <Button
+          <button
             type="button"
-            variant="secondary"
-            size="sm"
-            className="mt-4"
+            className="mt-5 inline-flex h-9 items-center gap-2 border border-border/70 bg-card px-5 text-xs font-semibold text-foreground transition-colors hover:bg-secondary hover:border-foreground/20"
             onClick={(event) => {
               event.stopPropagation()
               openFilePicker()
             }}
           >
             Browse files
-          </Button>
+          </button>
 
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[10px] text-muted-foreground/50">
             <span>{multiple ? "Multiple files supported" : "Single file only"}</span>
-            {maxFileSize ? <span>Max size {formatBytes(maxFileSize)}</span> : null}
+            {maxFileSize ? (
+              <>
+                <span>·</span>
+                <span>Max {formatBytes(maxFileSize)}</span>
+              </>
+            ) : null}
           </div>
         </div>
 
         {files.length > 0 ? (
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-medium">Uploaded files</p>
-              <p className="text-xs text-muted-foreground">{files.length} selected</p>
+              <p className="text-xs font-semibold text-muted-foreground/60">Uploaded files</p>
+              <p className="text-xs text-muted-foreground/50">{files.length} {files.length === 1 ? "file" : "files"}</p>
             </div>
-
-            <div className="grid gap-3">
+            <div className="grid gap-2">
               {files.map((file) => (
                 <FilePreview key={getFileKey(file)} file={file} onRemove={() => handleRemoveFile(file)} />
               ))}
@@ -313,18 +250,16 @@ export function FileDropzone({
         ) : null}
 
         {validationIssues.length > 0 ? (
-          <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
-            <p className="font-medium">Some files were skipped</p>
-            <ul className="mt-2 space-y-1">
+          <div className="border border-[#E8400C]/20 bg-[#E8400C]/5 p-4 text-sm text-[#E8400C]">
+            <p className="font-semibold text-xs mb-2">Some files were skipped</p>
+            <ul className="space-y-1 text-xs">
               {validationIssues.map((issue) => (
-                <li key={`${issue.name}-${issue.message}`}>
-                  {issue.name}: {issue.message}
-                </li>
+                <li key={`${issue.name}-${issue.message}`}>{issue.name}: {issue.message}</li>
               ))}
             </ul>
           </div>
         ) : null}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
