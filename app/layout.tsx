@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     template: "%s | TurnAnything.xyz",
   },
   description: "Turn anything into the format you actually need with a clean, mobile-first AI transformation workflow.",
+  other: {
+    "google-adsense-account": "ca-pub-8513557257502217",
+  },
 };
 
 export default function RootLayout({

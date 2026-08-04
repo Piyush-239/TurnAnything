@@ -49,89 +49,113 @@
 }
 
 :root {
-  /* ── Core palette: clean off-white + near-black + red-orange accent ── */
-  --background: #F8F7F4;
-  --foreground: #1A1A1A;
-  --card: #FFFFFF;
+  /* ── Core Palette: Clean warm neutrals + signature brand red accent ── */
+  --background: #F8F7F4;          /* Warm Alabaster background */
+  --foreground: #1A1A1A;          /* Charcoal text */
+  --card: #FFFFFF;                /* Pure White card surfaces */
   --card-foreground: #1A1A1A;
   --popover: #FFFFFF;
   --popover-foreground: #1A1A1A;
   --primary: #1A1A1A;
   --primary-foreground: #F8F7F4;
-  --secondary: #F0EFE9;
+  --secondary: #F0EFE9;          /* Sand neutral */
   --secondary-foreground: #1A1A1A;
   --muted: #F0EFE9;
-  --muted-foreground: #6B6B6B;
-  /* Red-orange is the ONLY accent — used sparingly */
-  --accent: #E8400C;
+  --muted-foreground: #6B6B6B;    /* Neutral support text */
+  
+  /* Signature Brand Accent (used sparingly for highlights & primary CTAs) */
+  --accent: #E8400C;             /* Brand signature red */
+  --accent-hover: #CF3507;       /* Darker brand red for hover state */
   --accent-foreground: #FFFFFF;
   --destructive: #E8400C;
   --destructive-foreground: #FFFFFF;
-  --border: rgba(0, 0, 0, 0.09);
-  --input: rgba(0, 0, 0, 0.09);
+  
+  /* Borders & Inputs */
+  --border: rgba(0, 0, 0, 0.07);  /* Soft thin divider */
+  --input: rgba(0, 0, 0, 0.07);
   --ring: #E8400C;
-  --chart-1: #E8400C;
-  --chart-2: #1A1A1A;
-  --chart-3: #6B6B6B;
-  --chart-4: #D4C5A9;
-  --chart-5: #A89B7D;
-  --radius: 0.375rem;
+  
+  /* Sidebar Specifics */
   --sidebar: #F8F7F4;
   --sidebar-foreground: #1A1A1A;
   --sidebar-primary: #1A1A1A;
   --sidebar-primary-foreground: #F8F7F4;
   --sidebar-accent: #F0EFE9;
   --sidebar-accent-foreground: #1A1A1A;
-  --sidebar-border: rgba(0, 0, 0, 0.09);
+  --sidebar-border: rgba(0, 0, 0, 0.07);
   --sidebar-ring: #E8400C;
 
-  /* Minimal shadows — no colored glows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-premium: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-lifted: 0 2px 8px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.06);
-  --shadow-glow: 0 0 0 1px rgba(232,64,12,0.15), 0 4px 16px rgba(232,64,12,0.08);
-  --shadow-glow-sm: 0 0 0 1px rgba(232,64,12,0.12);
+  /* ── Typography Scale & Weights (Inter default) ── */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  /* ── Spacing Tokens ── */
+  --spacing-section: 6rem;        /* Uniform section padding-y (96px) */
+  --spacing-section-mobile: 4rem; /* Section padding-y on mobile (64px) */
+  
+  /* ── Radius System (Consistent & premium curve) ── */
+  --radius: 0.5rem;               /* Base radius (8px) */
+  --radius-xs: 0.25rem;           /* 4px - extra small details */
+  --radius-sm: 0.375rem;          /* 6px - buttons, inputs */
+  --radius-md: 0.5rem;            /* 8px - inner containers */
+  --radius-lg: 0.75rem;           /* 12px - cards, upload zones */
+  --radius-xl: 1rem;              /* 16px - outer layout surfaces */
+  --radius-2xl: 1.5rem;           /* 24px - landing sections block */
+
+  /* ── Borders & Shadows ── */
+  --border-width: 1px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-premium: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03); /* Soft calm shadow */
+  --shadow-lifted: 0 4px 12px rgba(0,0,0,0.06), 0 12px 32px rgba(0,0,0,0.04); /* Focus state lift */
+  --shadow-glow: 0 0 0 1px rgba(232, 64, 12, 0.1), 0 4px 12px rgba(232, 64, 12, 0.05);
+  --shadow-glow-sm: 0 0 0 1px rgba(232, 64, 12, 0.08);
+
+  /* ── Transitions & Interactive states ── */
+  --transition-premium: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark {
-  --background: #141413;
-  --foreground: #EFEFEC;
-  --card: #1C1C1A;
+  /* ── Core Dark Palette: Sleek carbon + signature brand red accent ── */
+  --background: #141413;          /* Sleek black/charcoal */
+  --foreground: #EFEFEC;          /* Warm white text */
+  --card: #1C1C1A;                /* Charcoal card surface */
   --card-foreground: #EFEFEC;
   --popover: #1C1C1A;
   --popover-foreground: #EFEFEC;
   --primary: #EFEFEC;
   --primary-foreground: #141413;
-  --secondary: #242420;
+  --secondary: #242420;          /* Darker warm grey */
   --secondary-foreground: #EFEFEC;
   --muted: #242420;
-  --muted-foreground: #8A8A84;
+  --muted-foreground: #8A8A84;    /* Sleek grey support text */
+  
+  /* Brand Accent Dark */
   --accent: #E8400C;
+  --accent-hover: #CF3507;
   --accent-foreground: #FFFFFF;
   --destructive: #E8400C;
   --destructive-foreground: #FFFFFF;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.08);
+  
+  /* Dark Borders */
+  --border: rgba(255, 255, 255, 0.07);
+  --input: rgba(255, 255, 255, 0.07);
   --ring: #E8400C;
-  --chart-1: #E8400C;
-  --chart-2: #EFEFEC;
-  --chart-3: #8A8A84;
-  --chart-4: #3A3A36;
-  --chart-5: #505048;
+  
   --sidebar: #141413;
   --sidebar-foreground: #EFEFEC;
   --sidebar-primary: #EFEFEC;
   --sidebar-primary-foreground: #141413;
   --sidebar-accent: #242420;
   --sidebar-accent-foreground: #EFEFEC;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-border: rgba(255, 255, 255, 0.07);
   --sidebar-ring: #E8400C;
 
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-  --shadow-premium: 0 1px 4px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.35);
-  --shadow-lifted: 0 2px 8px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
-  --shadow-glow: 0 0 0 1px rgba(232,64,12,0.2), 0 4px 16px rgba(232,64,12,0.1);
-  --shadow-glow-sm: 0 0 0 1px rgba(232,64,12,0.15);
+  /* Dark Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-premium: 0 1px 4px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lifted: 0 4px 12px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 0 1px rgba(232, 64, 12, 0.15), 0 4px 16px rgba(232, 64, 12, 0.08);
+  --shadow-glow-sm: 0 0 0 1px rgba(232, 64, 12, 0.12);
 }
 
 @layer base {

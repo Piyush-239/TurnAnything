@@ -1,7 +1,30 @@
+"use client"
+
 import * as React from "react"
-import Link from "next/link"
-import { PrivacyCard } from "./privacy-card"
+import { useParams } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { getToolBySlug, type ToolCategory } from "@/lib/tools/registry"
+import {
+  ToolHero,
+  ToolWorkspace,
+  TrustSection,
+  BenefitsGrid,
+  WorkflowSection,
+  HowItWorksSection,
+  UseCasesSection,
+  FAQSection,
+  RelatedToolsSection,
+  RelatedGuidesSection,
+  CTASection,
+  WhoIsThisFor,
+} from "./index"
+
+import type { BenefitItem } from "./sections/benefits-grid"
+import type { TimelineStep } from "./sections/how-it-works-section"
+import type { WorkflowChainNode } from "./sections/workflow-section"
+import type { AudienceItem } from "./sections/who-is-this-for"
+import type { UseCaseItem } from "./sections/use-cases-section"
+import type { TrustItem } from "./sections/trust-section"
 
 type StandardToolLayoutProps = {
   title: string
@@ -9,15 +32,17 @@ type StandardToolLayoutProps = {
   category: string
   children: React.ReactNode
   className?: string
-}
-
-function formatCategory(category: string): string {
-  return category
-    .trim()
-    .split(/[-_\s]+/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join(" ")
+  
+  // Custom configurations for the flagship page or future custom tools
+  heroTitle?: string
+  heroDescription?: string
+  benefits?: BenefitItem[]
+  timelineSteps?: TimelineStep[]
+  useCases?: UseCaseItem[]
+  faqs?: { q: string; a: string }[]
+  toolWorkflow?: WorkflowChainNode[]
+  audience?: AudienceItem[]
+  trustItems?: TrustItem[]
 }
 
 export function StandardToolLayout({
@@ -26,61 +51,77 @@ export function StandardToolLayout({
   category,
   children,
   className,
+  heroTitle,
+  heroDescription,
+  benefits,
+  timelineSteps,
+  useCases,
+  faqs,
+  toolWorkflow,
+  audience,
+  trustItems,
 }: StandardToolLayoutProps) {
-  const normalizedCategory = formatCategory(category)
+  const params = useParams()
+  const slug = params?.slug as string
+
+  // Look up current tool metadata from registry, or fallback gracefully
+  const tool = React.useMemo(() => {
+    return getToolBySlug(slug) || {
+      slug: slug || "utility-tool",
+      title: title,
+      description: description,
+      category: category as ToolCategory,
+      enabled: true,
+      icon: () => null,
+      component: () => null,
+      seoTitle: title,
+      seoDescription: description,
+      keywords: [title.toLowerCase()],
+    }
+  }, [slug, title, description, category])
 
   return (
-    <main className={cn("mx-auto flex min-h-screen w-full max-w-4xl flex-col gap-10 px-4 py-12 sm:gap-12 sm:px-6 lg:px-8 select-none", className)}>
-      {/* 1. Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-[11px] font-medium text-muted-foreground/50">
-        <ol className="flex flex-wrap items-center gap-1.5">
-          <li>
-            <Link href="/" className="transition-colors hover:text-[#E8400C]">
-              Home
-            </Link>
-          </li>
-          <li aria-hidden="true" className="text-muted-foreground/30">›</li>
-          <li>
-            <Link href="/tools" className="transition-colors hover:text-[#E8400C]">
-              Tools
-            </Link>
-          </li>
-          <li aria-hidden="true" className="text-muted-foreground/30">›</li>
-          <li className="font-semibold text-foreground/70">{normalizedCategory}</li>
-        </ol>
-      </nav>
+    <div className="w-full min-h-screen bg-background">
+      {/* Centered content bounds with generous margins on both sides for wide viewports */}
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        <main className={cn("w-full flex flex-col gap-16 md:gap-24 select-none", className)}>
+          {/* 1. Hero Section */}
+          <ToolHero tool={tool} heroTitle={heroTitle} heroDescription={heroDescription} />
 
-      {/* 2. Title area */}
-      <div className="space-y-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl leading-[1.1]">
-            {title}
-          </h1>
-          <div className="flex flex-wrap gap-2 sm:shrink-0">
-            <span className="inline-flex items-center border border-border/70 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 rounded-sm">
-              {normalizedCategory}
-            </span>
-            <span className="inline-flex items-center gap-1.5 border border-[#E8400C]/20 bg-[#E8400C]/5 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#E8400C] rounded-sm">
-              <span className="size-1.5 rounded-full bg-[#E8400C]" />
-              Local Processing
-            </span>
-          </div>
-        </div>
-        <p className="max-w-3xl text-sm sm:text-base leading-relaxed text-muted-foreground">
-          {description}
-        </p>
+          {/* 2. Interactive Tool Workspace (Above the Fold) */}
+          <ToolWorkspace>{children}</ToolWorkspace>
+
+          {/* 3. Trust Strip */}
+          <TrustSection tool={tool} trustItems={trustItems} />
+
+          {/* 4. Core Benefits Grid */}
+          <BenefitsGrid tool={tool} benefits={benefits} />
+
+          {/* 5. Who is this designed for? */}
+          <WhoIsThisFor audience={audience} />
+
+          {/* 6. How it Works (Visual timeline) */}
+          <HowItWorksSection toolTitle={tool.title} timelineSteps={timelineSteps} />
+
+          {/* 7. Common Use Cases */}
+          <UseCasesSection tool={tool} cases={useCases} />
+
+          {/* 8. Linked Workflow Chain */}
+          <WorkflowSection toolWorkflow={toolWorkflow} />
+
+          {/* 9. Frequently Asked Questions (Accordion) */}
+          <FAQSection tool={tool} faqs={faqs} />
+
+          {/* 10. Related Tools */}
+          <RelatedToolsSection tool={tool} />
+
+          {/* 11. Related Guides */}
+          <RelatedGuidesSection tool={tool} />
+
+          {/* 12. Final CTA (with Search Uploader) */}
+          <CTASection />
+        </main>
       </div>
-
-      {/* 3. Main Tool Area */}
-      <section className="grid gap-8">
-        {children}
-
-        {/* PrivacyCard automatically included below tool area */}
-        <PrivacyCard />
-      </section>
-
-      {/* Placeholder for future sections */}
-      <section className="min-h-[20px]" />
-    </main>
+    </div>
   )
 }
