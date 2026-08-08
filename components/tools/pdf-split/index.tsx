@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { Input } from "@/components/ui/input"
 import { splitPdf } from "@/lib/utils/pdf-split"
 import {
@@ -89,12 +89,7 @@ export default function PdfSplitTool() {
   ])
 
   return (
-    <StandardToolLayout
-      title="PDF Split"
-      description="Split PDF pages or extract selected page ranges directly in your browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         <ToolUploadSection>
           <FileDropzone
             acceptedFileTypes={["application/pdf", ".pdf"]}
@@ -172,6 +167,5 @@ export default function PdfSplitTool() {
         )}
 
       </div>
-    </StandardToolLayout>
   )
 }

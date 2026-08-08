@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download, ImageIcon, RefreshCw, Wand2, Sparkles } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolResultCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolResultCard, ToolUploadSection } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 
 import { removeBackground } from "@/lib/utils/background-remover"
@@ -134,12 +134,7 @@ export default function BackgroundRemoverTool() {
   }, [])
 
   return (
-    <StandardToolLayout
-      title="Background Remover"
-      description="Remove image backgrounds locally in your browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         {images.length === 0 ? (
           <ToolUploadSection>
             <FileDropzone
@@ -301,6 +296,5 @@ export default function BackgroundRemoverTool() {
           </div>
         )}
       </div>
-    </StandardToolLayout>
   )
 }

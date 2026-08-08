@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { ArrowRight, ChevronDown, Menu as MenuIcon } from "lucide-react"
 
 import {
@@ -12,7 +13,7 @@ import {
 
 const links = [
 	{ href: "/#demo", label: "Demo" },
-	{ href: "/#tools", label: "Popular tools" },
+	{ href: "/tools", label: "Tools" },
 	{ href: "/#features", label: "Features" },
 	{ href: "/#how-it-works", label: "How it works" },
 	{ href: "/learn", label: "Learn" },
@@ -34,7 +35,7 @@ export default function MobileMenu() {
 					{links.map((link) => (
 						<DropdownMenuItem
 							key={link.href}
-							render={<a href={link.href} />}
+							render={<Link href={link.href} />}
 							className="rounded-lg px-3 py-2 text-sm"
 						>
 							{link.label}

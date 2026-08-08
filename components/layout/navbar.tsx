@@ -1,10 +1,11 @@
+import Link from "next/link"
 import Logo from "./logo"
 import MobileMenu from "./mobile-menu"
 
 import Container from "@/components/shared/container"
 
 const links = [
-	{ href: "/#demo", label: "Tools" },
+	{ href: "/tools", label: "Tools" },
 	{ href: "/#how-it-works", label: "How it works" },
 	{ href: "/learn", label: "Learn" },
 ]
@@ -18,13 +19,13 @@ export default function Navbar() {
 
 					<nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
 						{links.map((link) => (
-							<a
+							<Link
 								key={link.href}
 								href={link.href}
 								className="text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground"
 							>
 								{link.label}
-							</a>
+							</Link>
 						))}
 					</nav>
 

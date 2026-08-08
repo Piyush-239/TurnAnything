@@ -28,7 +28,7 @@ import {
 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolResultCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolResultCard, ToolUploadSection } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 
 import { compressImage, type CompressImageResult } from "@/lib/utils/image-compressor"
@@ -385,188 +385,173 @@ export default function ImageCompressorTool() {
   ]
 
   return (
-    <StandardToolLayout
-      title="Image Compressor"
-      description="Compress PNG, JPG, JPEG, WEBP, and BMP images locally in your browser with zero server uploads."
-      category="utility"
-      heroTitle="Compress Images Online Without Losing Quality"
-      heroDescription="Optimize your PNG, JPG, JPEG, WEBP, and BMP images directly in your browser. All computation executes locally on your device for absolute privacy and instantaneous processing speeds—no file uploads or signups required."
-      benefits={compressorBenefits}
-      audience={compressorAudience}
-      timelineSteps={compressorTimeline}
-      useCases={compressorUseCases}
-      faqs={compressorFaqs}
-      toolWorkflow={compressorWorkflow}
-      trustItems={compressorTrustItems}
-    >
-      <div className="grid gap-6">
-        {images.length === 0 ? (
-          <ToolUploadSection>
-            <FileDropzone
-              acceptedFileTypes={[
-                ".png",
-                ".jpg",
-                ".jpeg",
-                ".webp",
-                ".bmp",
-                "image/png",
-                "image/jpeg",
-                "image/webp",
-                "image/bmp",
-              ]}
-              multiple={false}
-              value={images}
-              onFilesSelected={handleFilesSelected}
-              title="Upload image"
-              description="Choose an image file to compress locally."
-              emptyStateTitle="Drop image here"
-              emptyStateDescription="PNG, JPG, JPEG, WEBP, and BMP files are supported."
-            />
-          </ToolUploadSection>
-        ) : (
-          <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8 shadow-sm space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-4 min-w-0">
-                <div className="relative size-16 rounded-xl overflow-hidden border border-border bg-muted flex items-center justify-center shrink-0">
-                  {originalPreviewUrl ? (
-                    <img src={originalPreviewUrl} alt="Original thumbnail" className="size-full object-cover" />
-                  ) : (
-                    <ImageIcon className="size-6 text-muted-foreground" />
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-foreground">{selectedImage.name}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{formatBytes(selectedImage.size)}</p>
-                  {dimensions && (
-                    <p className="text-[11px] text-muted-foreground mt-0.5">
-                      Dimensions: {dimensions.width} × {dimensions.height}
-                    </p>
-                  )}
-                </div>
+    <div className="grid gap-6">
+      {images.length === 0 ? (
+        <ToolUploadSection>
+          <FileDropzone
+            acceptedFileTypes={[
+              ".png",
+              ".jpg",
+              ".jpeg",
+              ".webp",
+              ".bmp",
+              "image/png",
+              "image/jpeg",
+              "image/webp",
+              "image/bmp",
+            ]}
+            multiple={false}
+            value={images}
+            onFilesSelected={handleFilesSelected}
+            title="Upload image"
+            description="Choose an image file to compress locally."
+            emptyStateTitle="Drop image here"
+            emptyStateDescription="PNG, JPG, JPEG, WEBP, and BMP files are supported."
+          />
+        </ToolUploadSection>
+      ) : (
+        <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8 shadow-sm space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="relative size-16 rounded-xl overflow-hidden border border-border bg-muted flex items-center justify-center shrink-0">
+                {originalPreviewUrl ? (
+                  <img src={originalPreviewUrl} alt="Original thumbnail" className="size-full object-cover" />
+                ) : (
+                  <ImageIcon className="size-6 text-muted-foreground" />
+                )}
               </div>
-              <Button variant="ghost" size="sm" className="self-start sm:self-center shrink-0" onClick={handleReset}>
-                Change image
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-foreground">{selectedImage.name}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{formatBytes(selectedImage.size)}</p>
+                {dimensions && (
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    Dimensions: {dimensions.width} × {dimensions.height}
+                  </p>
+                )}
+              </div>
+            </div>
+            <Button variant="ghost" size="sm" className="self-start sm:self-center shrink-0" onClick={handleReset}>
+              Change image
+            </Button>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 border-t pt-5 border-border/50">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="compressor-quality" className="text-sm font-semibold text-foreground">
+                  Quality: <span className="text-[#E8400C] font-extrabold">{quality}%</span>
+                </label>
+              </div>
+              <input
+                id="compressor-quality"
+                type="range"
+                min="10"
+                max="100"
+                value={quality}
+                disabled={isCompressing || compressedResult !== null}
+                onChange={(e) => setQuality(Number(e.target.value))}
+                className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-[#E8400C] outline-none"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="compressor-format" className="text-sm font-semibold text-foreground">
+                Output Format
+              </label>
+              <select
+                id="compressor-format"
+                className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50"
+                value={format}
+                disabled={isCompressing || compressedResult !== null}
+                onChange={(event) => setFormat(event.target.value as typeof format)}
+              >
+                <option value="auto">Auto (Keep original)</option>
+                <option value="jpeg">JPEG</option>
+                <option value="png">PNG</option>
+                <option value="webp">WEBP</option>
+              </select>
+            </div>
+          </div>
+
+          {compressedResult === null && (
+            <div className="text-xs text-muted-foreground flex justify-between border-t pt-4 border-border/50">
+              <span>Original Size: {formatBytes(selectedImage.size)}</span>
+              <span className="font-semibold text-foreground">Estimated Output: ~{formatBytes(estimatedSize)}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {images.length > 0 && compressedResult === null && (
+        <ToolActionCard
+          title="Ready to compress"
+          description="Your image stays in the browser. Nothing is uploaded."
+          buttonText="Compress Image"
+          loadingText="Compressing..."
+          loading={isCompressing}
+          disabled={images.length === 0}
+          error={errorMessage}
+          onAction={handleCompress}
+          icon={<Download className="size-4" />}
+        />
+      )}
+
+      {progressState && (
+        <ProgressCard
+          status={progressState.status}
+          progress={progressState.progress}
+        />
+      )}
+
+      {compressedResult && (
+        <ToolResultCard
+          title="Compression Result"
+          successMessage={`Saved ${compressedResult.reducedPercent}% of original size (${formatBytes(selectedImage.size - compressedResult.compressedSize)} saved)`}
+          downloadArea={
+            <div className="flex items-center gap-2.5">
+              <Button variant="outline" size="sm" onClick={handleReset}>
+                <RefreshCw className="mr-2 size-4" />
+                Compress Another
+              </Button>
+              <Button variant="default" size="sm" className="bg-[#E8400C] hover:bg-[#CF3507] text-white transition-colors" onClick={triggerDownload}>
+                <Download className="mr-2 size-4" />
+                Download Image
               </Button>
             </div>
-
-            <div className="grid gap-6 md:grid-cols-2 border-t pt-5 border-border/50">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label htmlFor="compressor-quality" className="text-sm font-semibold text-foreground">
-                    Quality: <span className="text-[#E8400C] font-extrabold">{quality}%</span>
-                  </label>
-                </div>
-                <input
-                  id="compressor-quality"
-                  type="range"
-                  min="10"
-                  max="100"
-                  value={quality}
-                  disabled={isCompressing || compressedResult !== null}
-                  onChange={(e) => setQuality(Number(e.target.value))}
-                  className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-[#E8400C] outline-none"
-                />
+          }
+        >
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-[#E8400C]/5 border border-[#E8400C]/15 mb-2">
+              <div className="space-y-1 text-center sm:text-left">
+                <p className="text-sm font-semibold text-foreground">Compression completed successfully!</p>
+                <p className="text-xs text-muted-foreground">Processed entirely in your browser. Nothing uploaded.</p>
               </div>
-
-              <div className="space-y-2">
-                <label htmlFor="compressor-format" className="text-sm font-semibold text-foreground">
-                  Output Format
-                </label>
-                <select
-                  id="compressor-format"
-                  className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50"
-                  value={format}
-                  disabled={isCompressing || compressedResult !== null}
-                  onChange={(event) => setFormat(event.target.value as typeof format)}
-                >
-                  <option value="auto">Auto (Keep original)</option>
-                  <option value="jpeg">JPEG</option>
-                  <option value="png">PNG</option>
-                  <option value="webp">WEBP</option>
-                </select>
-              </div>
+              <span className="inline-flex items-center rounded-full bg-[#E8400C] px-3.5 py-1 text-xs font-bold text-white shadow-glow-sm">
+                {compressedResult.reducedPercent}% Saved
+              </span>
             </div>
 
-            {compressedResult === null && (
-              <div className="text-xs text-muted-foreground flex justify-between border-t pt-4 border-border/50">
-                <span>Original Size: {formatBytes(selectedImage.size)}</span>
-                <span className="font-semibold text-foreground">Estimated Output: ~{formatBytes(estimatedSize)}</span>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="space-y-3 text-center">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Original ({formatBytes(selectedImage.size)})</p>
+                <div className="relative aspect-video rounded-xl overflow-hidden border border-border bg-muted flex items-center justify-center p-2 shadow-sm">
+                  {originalPreviewUrl && (
+                    <img src={originalPreviewUrl} alt="Original preview" className="max-h-full object-contain rounded-lg" />
+                  )}
+                </div>
               </div>
-            )}
+              <div className="space-y-3 text-center">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Compressed ({formatBytes(compressedResult.compressedSize)})</p>
+                <div className="relative aspect-video rounded-xl overflow-hidden border border-[#E8400C]/20 bg-muted flex items-center justify-center p-2 shadow-sm">
+                  {compressedPreviewUrl && (
+                    <img src={compressedPreviewUrl} alt="Compressed preview" className="max-h-full object-contain rounded-lg" />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-
-        {images.length > 0 && compressedResult === null && (
-          <ToolActionCard
-            title="Ready to compress"
-            description="Your image stays in the browser. Nothing is uploaded."
-            buttonText="Compress Image"
-            loadingText="Compressing..."
-            loading={isCompressing}
-            disabled={images.length === 0}
-            error={errorMessage}
-            onAction={handleCompress}
-            icon={<Download className="size-4" />}
-          />
-        )}
-
-        {progressState && (
-          <ProgressCard
-            status={progressState.status}
-            progress={progressState.progress}
-          />
-        )}
-
-        {compressedResult && (
-          <ToolResultCard
-            title="Compression Result"
-            successMessage={`Saved ${compressedResult.reducedPercent}% of original size (${formatBytes(selectedImage.size - compressedResult.compressedSize)} saved)`}
-            downloadArea={
-              <div className="flex items-center gap-2.5">
-                <Button variant="outline" size="sm" onClick={handleReset}>
-                  <RefreshCw className="mr-2 size-4" />
-                  Compress Another
-                </Button>
-                <Button variant="default" size="sm" className="bg-[#E8400C] hover:bg-[#CF3507] text-white transition-colors" onClick={triggerDownload}>
-                  <Download className="mr-2 size-4" />
-                  Download Image
-                </Button>
-              </div>
-            }
-          >
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-[#E8400C]/5 border border-[#E8400C]/15 mb-2">
-                <div className="space-y-1 text-center sm:text-left">
-                  <p className="text-sm font-semibold text-foreground">Compression completed successfully!</p>
-                  <p className="text-xs text-muted-foreground">Processed entirely in your browser. Nothing uploaded.</p>
-                </div>
-                <span className="inline-flex items-center rounded-full bg-[#E8400C] px-3.5 py-1 text-xs font-bold text-white shadow-glow-sm">
-                  {compressedResult.reducedPercent}% Saved
-                </span>
-              </div>
-
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div className="space-y-3 text-center">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Original ({formatBytes(selectedImage.size)})</p>
-                  <div className="relative aspect-video rounded-xl overflow-hidden border border-border bg-muted flex items-center justify-center p-2 shadow-sm">
-                    {originalPreviewUrl && (
-                      <img src={originalPreviewUrl} alt="Original preview" className="max-h-full object-contain rounded-lg" />
-                    )}
-                  </div>
-                </div>
-                <div className="space-y-3 text-center">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Compressed ({formatBytes(compressedResult.compressedSize)})</p>
-                  <div className="relative aspect-video rounded-xl overflow-hidden border border-[#E8400C]/20 bg-muted flex items-center justify-center p-2 shadow-sm">
-                    {compressedPreviewUrl && (
-                      <img src={compressedPreviewUrl} alt="Compressed preview" className="max-h-full object-contain rounded-lg" />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ToolResultCard>
-        )}
-      </div>
-    </StandardToolLayout>
+        </ToolResultCard>
+      )}
+    </div>
   )
 }

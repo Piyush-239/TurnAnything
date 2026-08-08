@@ -3,6 +3,7 @@
 import Section from "@/components/shared/section"
 import IntentSearch from "@/components/intent-search"
 import PopularTools from "@/components/home/popular-tools"
+import HowItWorks from "@/components/home/how-it-works"
 
 const quickLinks = [
   "Video → summary",
@@ -76,6 +77,9 @@ export default function TurnAnythingHome() {
 					</div>
 				</div>
 			</div>
+
+			{/* ── How it works ──────────────────────────────────────── */}
+			<HowItWorks />
 
 			{/* ── Tool grid ─────────────────────────────────────────── */}
 			<PopularTools />

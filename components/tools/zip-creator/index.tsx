@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 
 import { createZipBlob } from "@/lib/utils/zip"
 
@@ -82,12 +82,7 @@ export default function ZipCreatorTool() {
   }, [files, triggerDownload])
 
   return (
-    <StandardToolLayout
-      title="ZIP Creator"
-      description="Compress multiple files into a ZIP archive directly in your browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         <ToolUploadSection>
           <FileDropzone
             acceptedFileTypes={[]}
@@ -120,6 +115,5 @@ export default function ZipCreatorTool() {
           />
         )}
       </div>
-    </StandardToolLayout>
   )
 }

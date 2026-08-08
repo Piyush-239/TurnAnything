@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download, Loader2 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolResultCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolResultCard, ToolUploadSection } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 
 import { extractZip, type ExtractedEntry } from "@/lib/utils/zip-extractor"
@@ -149,12 +149,7 @@ export default function ZipExtractorTool() {
   }, [extractedFiles, files, triggerDownload])
 
   return (
-    <StandardToolLayout
-      title="ZIP Extractor"
-      description="Extract ZIP archives directly in your browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         <ToolUploadSection>
           <FileDropzone
             acceptedFileTypes={[".zip", "application/zip", "application/x-zip-compressed"]}
@@ -241,6 +236,5 @@ export default function ZipExtractorTool() {
           </ToolResultCard>
         )}
       </div>
-    </StandardToolLayout>
   )
 }

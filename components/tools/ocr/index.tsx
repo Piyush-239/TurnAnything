@@ -4,7 +4,7 @@ import * as React from "react"
 import { Copy, Download, FileText, Trash2, Check } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolResultCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolResultCard, ToolUploadSection } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 
 import { extractTextFromImage } from "@/lib/utils/ocr"
@@ -122,12 +122,7 @@ export default function OcrTool() {
   }, [])
 
   return (
-    <StandardToolLayout
-      title="Image to Text (OCR)"
-      description="Extract editable text from images directly in your browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         <ToolUploadSection>
           <FileDropzone
             acceptedFileTypes={[
@@ -218,6 +213,5 @@ export default function OcrTool() {
           </ToolResultCard>
         )}
       </div>
-    </StandardToolLayout>
   )
 }

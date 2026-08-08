@@ -14,7 +14,7 @@ import {
   type ImageOutputFormat,
   type ImageConversionProgress,
 } from "@/lib/utils/image-converter"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"
 
 const acceptedImageFileTypes = [
@@ -164,12 +164,7 @@ export default function ImageConverterTool() {
     : getImageInputFormatLabel(inputFormat)
 
   return (
-    <StandardToolLayout
-      title="Image Converter"
-      description="Convert JPG, JPEG, PNG, WEBP, GIF, and BMP images directly in your browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         <ToolUploadSection>
           <FileDropzone
             acceptedFileTypes={acceptedImageFileTypes}
@@ -250,6 +245,5 @@ export default function ImageConverterTool() {
 
         {progressState ? <ProgressCard status={progressState.status} progress={progressState.progress} /> : null}
       </div>
-    </StandardToolLayout>
   )
 }

@@ -5,7 +5,7 @@ import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
 import { createImagesPdfBlob, type PdfGenerationProgress } from "@/lib/utils/pdf"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"
 
 // This component stays page-agnostic so the registry can mount it from the dynamic tool route.
@@ -68,12 +68,7 @@ export default function ImageToPdfTool() {
   }, [handleProgressUpdate, images, triggerDownload])
 
   return (
-    <StandardToolLayout
-      title="Image to PDF"
-      description="Combine images into a single PDF file in the browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         <ToolUploadSection>
           <FileDropzone
             acceptedFileTypes={["image/*"]}
@@ -104,6 +99,5 @@ export default function ImageToPdfTool() {
           <ProgressCard status={progressState.status} progress={progressState.progress} />
         ) : null}
       </div>
-    </StandardToolLayout>
   )
 }

@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { getFFmpeg } from "@/lib/ffmpeg/ffmpeg"
 import { COMPLETION_PREVIEW_MS, type ToolProgressState, waitFor } from "@/lib/tools/progress"
 
@@ -130,12 +130,7 @@ export default function VideoToAudioTool() {
   }, [buildOutputFileName, selectedVideo, triggerDownload])
 
   return (
-    <StandardToolLayout
-      title="Video to Audio"
-      description="Extract audio from MP4, MOV, WEBM, AVI and MKV videos directly in your browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         <ToolUploadSection>
           <FileDropzone
             acceptedFileTypes={acceptedVideoFileTypes}
@@ -165,6 +160,5 @@ export default function VideoToAudioTool() {
           <ProgressCard status={progressState.status} progress={progressState.progress} />
         ) : null}
       </div>
-    </StandardToolLayout>
   )
 }

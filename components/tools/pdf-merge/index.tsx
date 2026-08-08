@@ -4,7 +4,7 @@ import * as React from "react"
 import { Download, GripVertical, MoveDown, MoveUp, Trash2 } from "lucide-react"
 
 import { FileDropzone } from "@/components/shared/file-dropzone"
-import { ProgressCard, StandardToolLayout, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
+import { ProgressCard, ToolActionCard, ToolUploadSection } from "@/components/tool-layout"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { mergePdfFiles, getMergedPdfFileName, type PdfMergeProgress, type PdfFileEntry } from "@/lib/utils/pdf-merge"
@@ -120,12 +120,7 @@ export default function PdfMergeTool() {
   }, [])
 
   return (
-    <StandardToolLayout
-      title="PDF Merge"
-      description="Merge multiple PDF files locally in your browser."
-      category="utility"
-    >
-      <div className="grid gap-6">
+    <div className="grid gap-6">
         <ToolUploadSection>
           <FileDropzone
             acceptedFileTypes={[".pdf", "application/pdf"]}
@@ -276,6 +271,5 @@ export default function PdfMergeTool() {
 
         {progressState ? <ProgressCard status={progressState.status} progress={progressState.progress} /> : null}
       </div>
-    </StandardToolLayout>
   )
 }
